@@ -35,63 +35,63 @@ public class CharacterStat {
         this.spellVamp = spellVamp;
     }
 
-    protected int getHealth() {
+    public int getHealth() {
         return health;
     }
 
-    protected int getMana() {
+    public int getMana() {
         return mana;
     }
 
-    protected int getStrength() {
+    public int getStrength() {
         return strength;
     }
 
-    protected int getDexterity() {
+    public int getDexterity() {
         return dexterity;
     }
 
-    protected int getIntelligence() {
+    public int getIntelligence() {
         return intelligence;
     }
 
-    protected int getArmor() {
+    public int getArmor() {
         return armor;
     }
 
-    protected int getMagicResistance() {
+    public int getMagicResistance() {
         return magicResistance;
     }
 
-    protected int getAttackDamage() {
+    public int getAttackDamage() {
         return attackDamage;
     }
 
-    protected int getAbilityPower() {
+    public int getAbilityPower() {
         return abilityPower;
     }
 
-    protected int getAttackSpeed() {
+    public int getAttackSpeed() {
         return attackSpeed;
     }
 
-    protected int getMovementSpeed() {
+    public int getMovementSpeed() {
         return movementSpeed;
     }
 
-    protected int getCriticalStrikeChance() {
+    public int getCriticalStrikeChance() {
         return criticalStrikeChance;
     }
 
-    protected int getCriticalStrikeDamage() {
+    public int getCriticalStrikeDamage() {
         return criticalStrikeDamage;
     }
 
-    protected int getLifeSteal() {
+    public int getLifeSteal() {
         return lifeSteal;
     }
 
-    protected int getSpellVamp() {
+    public int getSpellVamp() {
         return spellVamp;
     }
 }

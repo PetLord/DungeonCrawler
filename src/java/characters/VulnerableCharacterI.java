@@ -1,6 +1,9 @@
 package characters;
 
 public interface VulnerableCharacterI {
-    public void receiveAttack(int damage);
-    public boolean isAlive();
+    void receiveAttack(int damage);
+    void heal(int healAmount);
+    void die();
+    int getCurrentHealth();
+    boolean isAlive();
 }

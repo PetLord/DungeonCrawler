@@ -1,13 +1,13 @@
-package characterClasses.enemyCharacters;
+package characterProfessions.enemyCharacters;
 
 import stats.CharacterStat;
 import stats.FighterStatDecorator;
 
-public class CommonMobClass implements MobClassI {
+public class CommonMob implements MobTypeI {
     private String name;
     private CharacterStat statDecorator;
 
-    public CommonMobClass(String name, CharacterStat baseStat) {
+    public CommonMob(String name, CharacterStat baseStat) {
         this.name = name;
         this.statDecorator = new FighterStatDecorator(baseStat);
     }

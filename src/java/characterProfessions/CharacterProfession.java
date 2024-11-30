@@ -1,8 +1,8 @@
-package characterClasses;
+package characterProfessions;
 import stats.CharacterStat;
 import stats.CharacterStatDecorator;
 
-public interface CharacterClass {
+public interface CharacterProfession {
      String name = "";
      CharacterStat characterStat = new CharacterStatDecorator();
 

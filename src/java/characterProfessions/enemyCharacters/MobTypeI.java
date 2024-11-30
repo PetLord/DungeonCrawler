@@ -1,10 +1,10 @@
-package characterClasses.enemyCharacters;
+package characterProfessions.enemyCharacters;
 
-import characterClasses.CharacterClass;
+import characterProfessions.CharacterProfession;
 import stats.CharacterStat;
 import stats.CharacterStatDecorator;
 
-public interface MobClassI extends CharacterClass {
+public interface MobTypeI extends CharacterProfession {
     String name = "";
     CharacterStat statDecorator = new CharacterStatDecorator();
     String rarity = "";

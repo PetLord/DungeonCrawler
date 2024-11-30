@@ -1,10 +1,10 @@
-package characterClasses.playableCharacters;
+package characterProfessions.playableCharacters;
 
-import characterClasses.CharacterClass;
+import characterProfessions.CharacterProfession;
 import stats.FighterStatDecorator;
 import stats.CharacterStat;
 
-public class Fighter implements CharacterClass {
+public class Fighter implements CharacterProfession {
     private String name;
     private CharacterStat statDecorator;
 
