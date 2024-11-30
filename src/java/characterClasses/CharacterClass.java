@@ -1,7 +1,11 @@
 package characterClasses;
+import stats.CharacterStat;
 import stats.CharacterStatDecorator;
 
 public interface CharacterClass {
      String name = "";
-     CharacterStatDecorator statdecorator = new CharacterStatDecorator();
+     CharacterStat characterStat = new CharacterStatDecorator();
+
+     String getName();
+     CharacterStat getStats();
 }

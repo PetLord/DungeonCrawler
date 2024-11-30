@@ -1,4 +1,7 @@
-import characterClasses.Fighter;
+import characterClasses.enemyCharacters.CommonMobClass;
+import characterClasses.playableCharacters.Fighter;
+import characters.Enemy;
+import characters.Player;
 import stats.CharacterStat;
 
 public class TestClasses {
@@ -7,10 +10,14 @@ public class TestClasses {
         CharacterStat baseStat = new CharacterStat(20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0 ,0);
 
         Fighter fighter = new Fighter(baseStat);
-        System.out.println("Fighter Name: " + fighter.getName());
-        System.out.println("Fighter Strength: " + fighter.getStats().getStrength());
-        System.out.println("Fighter Dexterity: " + fighter.getStats().getDexterity());
-        System.out.println("Fighter Health: " + fighter.getStats().getHealth());
+        Player player = new Player("Player", fighter);
+
+
+        CommonMobClass commonMobClass = new CommonMobClass("Goblin", baseStat);
+        Enemy e1 = new Enemy(commonMobClass);
+
+        player.attack(e1);
+
 
     }
 

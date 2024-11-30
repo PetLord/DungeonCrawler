@@ -1,11 +1,12 @@
-package characterClasses;
+package characterClasses.playableCharacters;
 
+import characterClasses.CharacterClass;
 import stats.FighterStatDecorator;
 import stats.CharacterStat;
 
 public class Fighter implements CharacterClass {
     private String name;
-    private FighterStatDecorator statDecorator;
+    private CharacterStat statDecorator;
 
     public Fighter(CharacterStat baseStat) {
         this.name = "Fighter";
@@ -16,7 +17,7 @@ public class Fighter implements CharacterClass {
         return name;
     }
 
-    public FighterStatDecorator getStats() {
+    public CharacterStat getStats() {
         return statDecorator;
     }
 
