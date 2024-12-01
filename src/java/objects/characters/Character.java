@@ -1,17 +1,23 @@
-package characters;
+package objects.characters;
 import characterProfessions.*;
 import stats.CharacterStat;
+import objects.Entity;
 
-public class Character{
+public class Character extends Entity {
     protected String name;
     protected int currentHealth;
+    protected int speed;
     CharacterProfession characterProfession;
     CharacterStat characterStat;
 
-    public Character(String name, CharacterProfession characterClass){
+    private final int PLAYERHEIGHT = 75;
+    private final int PLAYERWIDTH = 50;
+
+    public Character(String name, CharacterProfession characterProfession){
+        super(0,0,50,75);
         this.name = name;
-        this.characterProfession = characterClass;
-        this.characterStat = characterClass.getStats();
+        this.characterProfession = characterProfession;
+        this.characterStat = characterProfession.getStats();
         currentHealth = characterStat.getHealth();
     }
 
@@ -51,4 +57,6 @@ public class Character{
         System.out.println("Life Steal: " + characterStat.getLifeSteal());
         System.out.println("Spell Vamp: " + characterStat.getSpellVamp());
     }
+
+
 }
