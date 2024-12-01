@@ -1,7 +1,7 @@
 package objects;
 
 import gameWindow.GamePanel;
-
+import components.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,4 +65,5 @@ public class Entity {
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
+
 }

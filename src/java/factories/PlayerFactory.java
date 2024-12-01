@@ -2,6 +2,7 @@ package factories;
 
 import characterProfessions.CharacterProfession;
 import components.GraphicsComponent;
+import gameWindow.GamePanel;
 import objects.characters.Player;
 
 import java.awt.Image;
@@ -19,16 +20,16 @@ public class PlayerFactory {
     private static final int PLAYERHEIGHT = 75;
     private static final int PLAYERWIDTH = 50;
 
-    public static Player createDefaultPlayer(CharacterProfession profession) {
+    public static Player createDefaultPlayer(CharacterProfession profession, GamePanel gamePanel) {
         String defaultName = "Default Player";
         Image defaultImage = loadDefaultPlayerImage();
         List<Image> defaultAnimationFrames = loadDefaultAnimationFrames();
 
-        Player tempPlayer = new Player(defaultName, profession, defaultImage, defaultAnimationFrames);
+        Player tempPlayer = new Player(defaultName, profession, defaultImage, defaultAnimationFrames, gamePanel);
         tempPlayer.setHeight(PLAYERHEIGHT);
         tempPlayer.setWidth(PLAYERWIDTH);
-        tempPlayer.addComponent(MovementComponent.class, new MovementComponent(25, tempPlayer));
-        tempPlayer.addComponent(PlayerInputComponent.class, new PlayerInputComponent(tempPlayer.getComponent(MovementComponent.class)));
+        tempPlayer.addComponent(MovementComponent.class, new MovementComponent(5));
+        tempPlayer.addComponent(PlayerInputComponent.class, new PlayerInputComponent(tempPlayer.getComponent(MovementComponent.class), gamePanel));
         tempPlayer.addComponent(GraphicsComponent.class, new GraphicsComponent(defaultImage));
 
         return tempPlayer;

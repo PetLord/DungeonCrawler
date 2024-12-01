@@ -15,19 +15,12 @@ public class Player extends Character {
     private AnimationComponent animationComponent;
     private PlayerInputComponent playerinputComponent;
 
-    public Player(String name, CharacterProfession characterProfession) {
-        super(name, characterProfession);
-        this.movementComponent = null;
-        this.graphicsComponent = null;
-        this.animationComponent = null;
-        this.playerinputComponent = null;
-    }
-
-    public Player(String name, CharacterProfession characterProfession, Image playerImage, List<Image> animationFrames) {
+    public Player(String name, CharacterProfession characterProfession, Image playerImage, List<Image> animationFrames, GamePanel gamePanel) {
         super(name, characterProfession);
 
-        this.movementComponent = new MovementComponent(5, this);
-        this.playerinputComponent = new PlayerInputComponent(movementComponent);
+        this.gamePanel = gamePanel;
+        this.movementComponent = new MovementComponent(5);
+        this.playerinputComponent = new PlayerInputComponent(movementComponent, gamePanel);
         this.graphicsComponent = new GraphicsComponent(playerImage);
         this.animationComponent = new AnimationComponent();
 
@@ -91,10 +84,11 @@ public class Player extends Character {
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         if(hasComponent(PlayerInputComponent.class)){
-            playerinputComponent.addKeyListener(gamePanel);
+            playerinputComponent.setGamePanel(gamePanel);
+            playerinputComponent.addKeyListener();
         } else {
-            playerinputComponent = new PlayerInputComponent(movementComponent);
-            playerinputComponent.addKeyListener(gamePanel);
+            playerinputComponent = new PlayerInputComponent(movementComponent, gamePanel);
+            playerinputComponent.addKeyListener();
             this.addComponent(PlayerInputComponent.class, playerinputComponent);
         }
     }

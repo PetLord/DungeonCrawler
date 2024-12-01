@@ -6,7 +6,6 @@ import objects.Entity;
 public class Character extends Entity {
     protected String name;
     protected int currentHealth;
-    protected int speed;
     CharacterProfession characterProfession;
     CharacterStat characterStat;
 

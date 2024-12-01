@@ -7,10 +7,8 @@ public class MovementComponent {
     private int vx, vy;    // Velocity
     private double ax, ay; // Acceleration
     private double friction; // Friction or deceleration factor
-    Entity entity;
 
-    public MovementComponent(int speed, Entity entity) {
-        this.entity = entity;
+    public MovementComponent(int speed) {
         this.speed = speed;
         this.vx = 0;
         this.vy = 0;
@@ -31,30 +29,28 @@ public class MovementComponent {
     public void move() {
         vx += (int)ax;
         vy += (int)ay;
-        System.out.println("Moving:" + vx + " " + vy + " " + ax + " " + ay);
 
-//        if (Math.abs(vx) > speed) {
-//            vx = (int) (Math.signum(vx) * speed);
-//        }
-//        if (Math.abs(vy) > speed) {
-//            vy = (int) (Math.signum(vy) * speed);
-//        }
-//
-//        // Apply friction/deceleration
-//        ax *= (1 - friction); // Decrease acceleration (deceleration)
-//        ay *= (1 - friction);
-//
-//        // Reduce velocity gradually to simulate friction
-//        vx *= (int)(1 - friction);
-//        vy *= (int)(1 - friction);
-//
-//        // Stop when the velocity is small enough
-//        if (Math.abs(vx) < 1) vx = 0;
-//        if (Math.abs(vy) < 1) vy = 0;
+        if (Math.abs(vx) > speed) {
+            vx = (int) (Math.signum(vx) * speed);
+        }
+        if (Math.abs(vy) > speed) {
+            vy = (int) (Math.signum(vy) * speed);
+        }
+
+        // Apply friction/deceleration
+        ax *= (1 - friction); // Decrease acceleration (deceleration)
+        ay *= (1 - friction);
+
+       // Reduce velocity gradually to simulate friction
+        //vx *= (int)(1 - friction);
+        //vy *= (int)(1 - friction);
+
+        // Stop when the velocity is small enough
+        //if (Math.abs(vx) < 1) vx = 0;
+        //if (Math.abs(vy) < 1) vy = 0;
     }
 
-    public void updatePosition() {
-        System.out.println("Updating position:" + vx + " " + vy);
+    public void updatePosition(Entity entity) {
         move();
         entity.setX(entity.getX() + vx);
         entity.setY(entity.getY() + vy);

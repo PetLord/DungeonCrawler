@@ -2,6 +2,8 @@ package gameWindow;
 import components.GraphicsComponent;
 import objects.Entity;
 import components.MovementComponent;
+import objects.characters.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -44,9 +46,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     void update() {
         for (Entity entity : gameWorld.getEntities()) {
-            if (entity.hasComponent(MovementComponent.class)) {
+            if(entity instanceof Player) {
                 MovementComponent movement = entity.getComponent(MovementComponent.class);
-                movement.updatePosition();
+                if (movement != null) {
+                    movement.updatePosition(entity);
+                }
             }
         }
     }

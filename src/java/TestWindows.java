@@ -4,7 +4,6 @@ import factories.PlayerFactory;
 import gameWindow.GameFrame;
 import objects.characters.Player;
 import stats.*;
-import java.util.concurrent.TimeUnit;
 
 public class TestWindows {
 
@@ -12,7 +11,7 @@ public class TestWindows {
         GameFrame frame = new GameFrame();
         CharacterStat baseStats = new CharacterStat(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
         CharacterProfession f = new Fighter(baseStats);
-        Player p1 = PlayerFactory.createDefaultPlayer(f);
+        Player p1 = PlayerFactory.createDefaultPlayer(f, frame.getGamePanel());
 
         frame.getGamePanel().addEntity(p1);
     }
