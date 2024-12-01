@@ -5,14 +5,14 @@ import objects.Entity;
 
 import java.util.ArrayList;
 
-public class gameWorld {
+public class GameWorld {
     private final int worldHeight;
     private final int worldWidth;
     private final Camera camera;
-    private final gamePanel gamePanel;
+    private final GamePanel gamePanel;
     private ArrayList<Entity> entities;
 
-    public gameWorld(gamePanel gamepanel, int width, int height) {
+    public GameWorld(GamePanel gamepanel, int width, int height) {
         this.gamePanel = gamepanel;
         this.worldWidth = width;
         this.worldHeight = height;
@@ -27,4 +27,14 @@ public class gameWorld {
     public int getWorldWidth() {
         return worldWidth;
     }
+
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+    }
+
+    public ArrayList<Entity> getEntities() {
+        return entities;
+    }
+
+
 }

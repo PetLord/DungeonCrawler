@@ -10,9 +10,6 @@ public class Character extends Entity {
     CharacterProfession characterProfession;
     CharacterStat characterStat;
 
-    private final int PLAYERHEIGHT = 75;
-    private final int PLAYERWIDTH = 50;
-
     public Character(String name, CharacterProfession characterProfession){
         super(0,0,50,75);
         this.name = name;

@@ -2,21 +2,25 @@ package gameWindow;
 
 import javax.swing.*;
 
-public class gameFrame extends JFrame {
-    private gamePanel gamepanel;
+public class GameFrame extends JFrame {
+    private GamePanel gamepanel;
 
-    public gameFrame() {
+    public GameFrame() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setTitle("Dungeon Crawler");
         //this.setUndecorated(true);
 
-        gamepanel = new gamePanel();
+        gamepanel = new GamePanel();
         this.add(gamepanel);
 
         this.pack();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         this.setVisible(true);
+    }
+
+    public GamePanel getGamePanel() {
+        return gamepanel;
     }
 }

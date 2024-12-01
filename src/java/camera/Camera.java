@@ -1,12 +1,12 @@
 package camera;
 
-import gameWindow.gameWorld;
+import gameWindow.GameWorld;
 import objects.Entity;
 
 public class Camera extends Entity {
-    private final gameWorld world;
+    private final GameWorld world;
 
-    public Camera(gameWorld world, int width, int height) {
+    public Camera(GameWorld world, int width, int height) {
         super(0, 0, width, height);
         this.world = world;
     }

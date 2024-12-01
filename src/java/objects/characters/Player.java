@@ -1,41 +1,62 @@
 package objects.characters;
 
 import characterProfessions.CharacterProfession;
-import components.AnimationComponent;
-import components.AnimationState;
-import components.GraphicsComponent;
-import components.MovementComponent;
+import components.*;
+import gameWindow.GamePanel;
 
 import java.awt.*;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 public class Player extends Character {
+    private GamePanel gamePanel;
     private MovementComponent movementComponent;
     private GraphicsComponent graphicsComponent;
     private AnimationComponent animationComponent;
+    private PlayerInputComponent playerinputComponent;
 
     public Player(String name, CharacterProfession characterProfession) {
         super(name, characterProfession);
-        this.movementComponent = new MovementComponent(5);  // Speed of 5
         this.movementComponent = null;
         this.graphicsComponent = null;
         this.animationComponent = null;
+        this.playerinputComponent = null;
     }
 
     public Player(String name, CharacterProfession characterProfession, Image playerImage, List<Image> animationFrames) {
         super(name, characterProfession);
 
-        this.movementComponent = new MovementComponent(5);
+        this.movementComponent = new MovementComponent(5, this);
+        this.playerinputComponent = new PlayerInputComponent(movementComponent);
         this.graphicsComponent = new GraphicsComponent(playerImage);
         this.animationComponent = new AnimationComponent();
 
         this.addComponent(MovementComponent.class, movementComponent);
         this.addComponent(GraphicsComponent.class, graphicsComponent);
         this.addComponent(AnimationComponent.class, animationComponent);
+        this.addComponent(PlayerInputComponent.class, playerinputComponent);
     }
 
     public void setMovementComponent(MovementComponent movementComponent) {
         this.movementComponent = movementComponent;
+    }
+
+    private void setAnimationFrames(List<Image> frames, String type) {
+        if (!this.hasComponent(AnimationComponent.class)) {
+            this.animationComponent = new AnimationComponent();
+            this.addComponent(AnimationComponent.class, animationComponent);
+        }
+        switch (type) {
+            case "walk":
+                this.animationComponent.setWalkFrames(frames);
+                break;
+            case "idle":
+                this.animationComponent.setIdleFrames(frames);
+                break;
+            case "run":
+                this.animationComponent.setRunFrames(frames);
+                break;
+        }
     }
 
     public void setPlayerImage(Image playerImage) {
@@ -45,36 +66,6 @@ public class Player extends Character {
            this.graphicsComponent = new GraphicsComponent(playerImage);
            this.addComponent(GraphicsComponent.class, graphicsComponent);
        }
-    }
-
-    public void setIdleFrames(List<Image> idleFrames) {
-        if(this.hasComponent(AnimationComponent.class)){
-            this.animationComponent.setIdleFrames(idleFrames);
-        } else {
-            this.animationComponent = new AnimationComponent();
-            this.animationComponent.setIdleFrames(idleFrames);
-            this.addComponent(AnimationComponent.class, animationComponent);
-        }
-    }
-
-    public void setWalkFrames(List<Image> walkFrames) {
-        if(this.hasComponent(AnimationComponent.class)){
-            this.animationComponent.setWalkFrames(walkFrames);
-        } else {
-            this.animationComponent = new AnimationComponent();
-            this.animationComponent.setWalkFrames(walkFrames);
-            this.addComponent(AnimationComponent.class, animationComponent);
-        }
-    }
-
-    public void setRunFrames(List<Image> runFrames) {
-        if(this.hasComponent(AnimationComponent.class)){
-            this.animationComponent.setRunFrames(runFrames);
-        } else {
-            this.animationComponent = new AnimationComponent();
-            this.animationComponent.setRunFrames(runFrames);
-            this.addComponent(AnimationComponent.class, animationComponent);
-        }
     }
 
     public void setAnimationState(AnimationState state) {
@@ -95,6 +86,17 @@ public class Player extends Character {
     public void render(Graphics g) {
         animationComponent.update();
         graphicsComponent.render(g, getX(), getY(), getWidth(), getHeight());
+    }
+
+    public void setGamePanel(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+        if(hasComponent(PlayerInputComponent.class)){
+            playerinputComponent.addKeyListener(gamePanel);
+        } else {
+            playerinputComponent = new PlayerInputComponent(movementComponent);
+            playerinputComponent.addKeyListener(gamePanel);
+            this.addComponent(PlayerInputComponent.class, playerinputComponent);
+        }
     }
 
 }
