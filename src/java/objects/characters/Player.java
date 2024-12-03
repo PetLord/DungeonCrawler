@@ -72,7 +72,7 @@ public class Player extends Character {
     }
 
     public void update() {
-        movementComponent.move();
+        movementComponent.updatePosition(this);
         animationComponent.update();
     }
 
