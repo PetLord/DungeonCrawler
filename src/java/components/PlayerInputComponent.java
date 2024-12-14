@@ -1,16 +1,18 @@
 package components;
 
 import gameWindow.GamePanel;
+import objects.Entity;
+
 import java.awt.event.KeyListener;
 
 public class PlayerInputComponent {
-    private final MovementComponent movementComponent;
+    private final Entity entity;
     private final KeyListener keylistener;
     private GamePanel gamePanel;
 
-    public PlayerInputComponent(MovementComponent movementComponent, GamePanel gamePanel) {
-        this.movementComponent = movementComponent;
-        this.keylistener = new PlayerInputListener(movementComponent);
+    public PlayerInputComponent(Entity entity, GamePanel gamePanel) {
+        this.entity = entity;
+        this.keylistener = new PlayerInputListener(entity);
         this.gamePanel = gamePanel;
         gamePanel.addKeyListener(keylistener);
     }

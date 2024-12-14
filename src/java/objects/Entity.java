@@ -1,14 +1,18 @@
 package objects;
 
 import gameWindow.GamePanel;
-import components.*;
+import gameWindow.GameWorld;
+
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Entity {
+public abstract class Entity {
     protected int x, y, width, height;
-    private Map<Class<?>, Object> components = new HashMap<>();
+    private final Map<Class<?>, Object> components = new HashMap<>();
     private GamePanel gamePanel;
+
+    public abstract void render(Graphics g);
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
@@ -64,6 +68,14 @@ public class Entity {
 
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+    }
+
+    public GameWorld getGameWorld() {
+        return gamePanel.getGameWorld();
+    }
+
+    public Rectangle getHitBox(){
+        return new Rectangle(x, y, width, height);
     }
 
 }

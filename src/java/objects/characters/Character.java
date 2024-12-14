@@ -1,20 +1,24 @@
 package objects.characters;
 import characterProfessions.*;
+import equipment.Equipment;
+import objects.structures.StartPoint;
 import stats.CharacterStat;
 import objects.Entity;
 
-public class Character extends Entity {
-    protected String name;
-    protected int currentHealth;
-    CharacterProfession characterProfession;
-    CharacterStat characterStat;
+public abstract class Character extends Entity {
+    private final String name;
+    private int currentHealth;
+    private CharacterProfession characterProfession;
+    private CharacterStat characterStat;
+    private Equipment equipment;
 
-    public Character(String name, CharacterProfession characterProfession){
-        super(0,0,50,75);
+    public Character(String name, CharacterProfession characterProfession, int width, int height) {
+        super(0,0, width, height);
         this.name = name;
         this.characterProfession = characterProfession;
         this.characterStat = characterProfession.getStats();
         currentHealth = characterStat.getHealth();
+        this.equipment = new Equipment();
     }
 
     public String getName() {
@@ -54,5 +58,24 @@ public class Character extends Entity {
         System.out.println("Spell Vamp: " + characterStat.getSpellVamp());
     }
 
+    public void moveTo(int x, int y) {
+        this.setX(x);
+        this.setY(y);
+    }
 
+    public void moveTo(StartPoint sp) {
+        if(sp == null){
+            return;
+        }
+        this.setX(sp.getStartRow() * sp.getTileWidth());
+        this.setY(sp.getStartCol() * sp.getTileHeight());
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public Equipment getEquipment(){
+        return equipment;
+    }
 }

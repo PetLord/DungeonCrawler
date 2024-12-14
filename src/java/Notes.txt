@@ -1,0 +1,15 @@
+To-do:
+
+Fix Room not fitting inside gamepanel if not n*n -> done
+Collision 10 tegyuk fel hogy done
+Animation 9 nagyjabol done, needs more keyframes
+Weapons 6
+ -- weapon holding: When facing up render weapons first, then player
+ -- different offset when facing left or right
+ -- weapon follow cursor
+Enemies 6
+Add more rooms 3
+Random floor generation 10
+Scalable character 2
+Skill tree? 9
+

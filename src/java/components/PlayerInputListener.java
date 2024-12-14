@@ -1,16 +1,18 @@
 package components;
 
+import objects.Entity;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerInputListener implements KeyListener {
-    private final MovementComponent movementComponent;
+    private final Entity entity;
     private final Set<Integer> activeKeys = new HashSet<>();
 
-    public PlayerInputListener(MovementComponent movementComponent) {
-        this.movementComponent = movementComponent;
+    public PlayerInputListener(Entity entity) {
+        this.entity = entity;
     }
 
     @Override
@@ -21,30 +23,37 @@ public class PlayerInputListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        activeKeys.add(key);
-        updateMovement();
+        if (activeKeys.add(key)) { // Add key only if it's not already present
+            updateMovement();
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
-        activeKeys.remove(key);
-        updateMovement();
+        if (activeKeys.remove(key)) { // Remove key only if it was active
+            updateMovement();
+        }
     }
 
     private void updateMovement() {
+        if(!entity.hasComponent(MovementComponent.class)) {
+            return;
+        }
+
         int vx = 0, vy = 0;
-        boolean sprinting = false;
 
-        if (activeKeys.contains(KeyEvent.VK_W) && !activeKeys.contains(KeyEvent.VK_S)) vy = -1;
-        if (activeKeys.contains(KeyEvent.VK_S) && !activeKeys.contains(KeyEvent.VK_W)) vy = 1;
-        if (activeKeys.contains(KeyEvent.VK_A) && !activeKeys.contains(KeyEvent.VK_D)) vx = -1;
-        if (activeKeys.contains(KeyEvent.VK_D) && !activeKeys.contains(KeyEvent.VK_A)) vx = 1;
-        if (activeKeys.contains(KeyEvent.VK_SHIFT)) sprinting = true;
+        if (activeKeys.contains(KeyEvent.VK_W)) vy -= 1;
+        if (activeKeys.contains(KeyEvent.VK_S)) vy += 1;
+        if (activeKeys.contains(KeyEvent.VK_A)) vx -= 1;
+        if (activeKeys.contains(KeyEvent.VK_D)) vx += 1;
 
-        movementComponent.setVelocity(vx, vy);
+        MovementComponent movementComponent = entity.getComponent(MovementComponent.class);
 
-        if (sprinting) {
+        movementComponent.setVx(vx);
+        movementComponent.setVy(vy);
+
+        if (activeKeys.contains(KeyEvent.VK_SHIFT)) {
             movementComponent.sprint();
         } else {
             movementComponent.walk();

@@ -1,65 +1,48 @@
 package components;
+import objects.Entity;
+
 import java.awt.*;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AnimationComponent {
+    private final Entity entity;
     private AnimationState currentState;
-    private List<Image> idleFrames;
-    private List<Image> walkFrames;
-    private List<Image> runFrames;
-    private List<Image> currentFrames;
-    private int frameRate;
+    private final Map<AnimationState, ArrayList<Image>> animationFrames = new HashMap<>();
+    private final Map<AnimationState, Integer> animationSpeed = new HashMap<>();
+    private ArrayList<Image> currentFrames;
     private int currentFrame;
     private long lastFrameTime;
 
-    public AnimationComponent(){
-        this.idleFrames = null;
-        this.walkFrames = null;
-        this.runFrames = null;
-        this.frameRate = 0;
-        this.currentFrame = 0;
-        this.currentState = AnimationState.IDLE;
-        this.currentFrames = null;
-        this.lastFrameTime = 0;
-    }
 
-    public AnimationComponent(List<Image> idleFrames, List<Image> walkFrames, List<Image> runFrames, int frameRate) {
-        this.idleFrames = idleFrames;
-        this.walkFrames = walkFrames;
-        this.runFrames = runFrames;
-        this.frameRate = frameRate;
+    public AnimationComponent(Entity entity) {
         this.currentFrame = 0;
-        this.currentState = AnimationState.IDLE;
-        this.currentFrames = idleFrames;
+        this.currentState = null;
+        this.entity = entity;
         this.lastFrameTime = System.currentTimeMillis();
     }
 
     public void update() {
-        if (System.currentTimeMillis() - lastFrameTime >= frameRate) {
+        int animSpeed = animationSpeed.get(currentState);
+        if (System.currentTimeMillis() - lastFrameTime >= animSpeed) {
             currentFrame = (currentFrame + 1) % currentFrames.size();  // Loop through frames
             lastFrameTime = System.currentTimeMillis();
         }
     }
 
     public void setAnimationState(AnimationState state) {
-        if (state != currentState) {
+        if (currentState != state && animationFrames.containsKey(state)) {
             currentState = state;
-            switch (state) {
-                case IDLE:
-                    currentFrames = idleFrames;
-                    break;
-                case WALKING:
-                    currentFrames = walkFrames;
-                    break;
-                case RUNNING:
-                    currentFrames = runFrames;
-                    break;
-            }
+            currentFrames = animationFrames.get(state);
             currentFrame = 0;
         }
     }
 
     public Image getCurrentFrame() {
+        if(entity.hasComponent(MovementComponent.class)){
+            MovementComponent movementComponent = entity.getComponent(MovementComponent.class);
+        }
         return currentFrames.get(currentFrame);
     }
 
@@ -67,15 +50,25 @@ public class AnimationComponent {
         this.currentState = currentState;
     }
 
-    public void setIdleFrames(List<Image> idleFrames) {
-        this.idleFrames = idleFrames;
-    }
+   public void addAnimationFrames(AnimationState state, ArrayList<Image> frames, double speed)
+   {
+        if(this.animationFrames.containsKey(state)){
+            this.animationFrames.replace(state, frames);
+            this.animationSpeed.replace(state, (int)(1000 / speed));
+        } else {
+            this.animationFrames.put(state, frames);
+            this.animationSpeed.put(state, (int)(1000 / speed));
+        }
+   }
 
-    public void setWalkFrames(List<Image> walkFrames) {
-        this.walkFrames = walkFrames;
-    }
+   public ArrayList<Image> getAnimationFrames(AnimationState state)
+   {
+       return this.animationFrames.get(state);
+   }
 
-    public void setRunFrames(List<Image> runFrames) {
-        this.runFrames = runFrames;
-    }
+   public boolean hasAnimationFrames(AnimationState state)
+   {
+       return this.animationFrames.containsKey(state);
+   }
+
 }
