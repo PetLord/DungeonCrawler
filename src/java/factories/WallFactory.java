@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class WallFactory {
+public abstract class WallFactory {
     public static Wall getWall(Floor f, WallDirection direction) {
         int x = f.getStartRow();
         int y = f.getStartCol();

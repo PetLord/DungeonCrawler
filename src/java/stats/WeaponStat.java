@@ -5,7 +5,7 @@ public class WeaponStat {
     private int range;
     private double attackSpeed;
 
-    public WeaponStat(int damage, int range, int attackSpeed) {
+    public WeaponStat(int damage, int range, double attackSpeed) {
         this.damage = damage;
         this.range = range;
         this.attackSpeed = attackSpeed;

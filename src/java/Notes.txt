@@ -4,9 +4,9 @@ Fix Room not fitting inside gamepanel if not n*n -> done
 Collision 10 tegyuk fel hogy done
 Animation 9 nagyjabol done, needs more keyframes
 Weapons 6
- -- weapon holding: When facing up render weapons first, then player
- -- different offset when facing left or right
- -- weapon follow cursor
+ -- weapon holding: When facing up render weapons first, then player done
+ -- different offset when facing left or right done
+ -- fix weapon range
 Enemies 6
 Add more rooms 3
 Random floor generation 10

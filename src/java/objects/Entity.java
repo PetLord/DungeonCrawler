@@ -1,7 +1,9 @@
 package objects;
 
+import components.Direction;
 import gameWindow.GamePanel;
 import gameWindow.GameWorld;
+import objects.structures.Room;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -11,15 +13,17 @@ public abstract class Entity {
     protected int x, y, width, height;
     private final Map<Class<?>, Object> components = new HashMap<>();
     private GamePanel gamePanel;
+    private Direction direction;
 
-    public abstract void render(Graphics g);
+    public abstract void render(Graphics2D g);
 
-    public Entity(int x, int y, int width, int height) {
+    public Entity(int x, int y, int width, int height, GamePanel gamePanel) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        gamePanel = null;
+        this.gamePanel = gamePanel;
+        direction = Direction.EAST;
     }
 
     public <T> void addComponent(Class<T> componentClass, T component) {
@@ -58,24 +62,28 @@ public abstract class Entity {
         this.y = y;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
     public GameWorld getGameWorld() {
-        return gamePanel.getGameWorld();
+        try {
+            return gamePanel.getGameWorld();
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     public Rectangle getHitBox(){
         return new Rectangle(x, y, width, height);
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 
 }

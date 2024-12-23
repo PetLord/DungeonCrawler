@@ -1,30 +1,16 @@
 package factories;
 
-import components.GraphicsComponent;
-import equipment.weapons.Sword;
-import objects.Entity;
+import equipment.weapons.swords.Stick;
+import equipment.weapons.swords.Sword;
+import gameWindow.GameWorld;
+import objects.characters.Player;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
+public abstract class EquipmentFactory {
 
-public class EquipmentFactory {
-
-    public static Sword getStarterSword(Entity entity) {
-        Sword sword = new Sword(StatFactory.getDefaultWeaponStat(), entity);
-        sword.setGraphicsComponent(new GraphicsComponent(EquipmentFactory.getDefaultSwordImage(), entity));
-        return sword;
+    public static Sword getStarterSword(Player player, GameWorld gameWorld) {
+        Sword stick = new Stick(StatFactory.getDefaultWeaponStat(), player, gameWorld);
+        stick.loadFrames();
+        return stick;
     }
 
-    private static Image getDefaultSwordImage() {
-        try {
-            BufferedImage img = ImageIO.read(new File("resources/images/weapons/stick.png"));
-            return new ImageIcon(img).getImage();
-        } catch (Exception e) {
-            System.out.println("Error loading default sword image");
-            return null;
-        }
-    }
 }

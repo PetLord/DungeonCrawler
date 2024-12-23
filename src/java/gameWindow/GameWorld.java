@@ -6,8 +6,9 @@ import components.MovementComponent;
 import factories.PlayerFactory;
 import factories.RoomFactory;
 import factories.StatFactory;
-import objects.characters.player.Player;
+import objects.characters.Player;
 import objects.structures.Room;
+import objects.structures.Tile;
 import stats.CharacterStat;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class GameWorld {
         this.worldHeight = height;
 
         rooms = new ArrayList<>();
-        Room starterRoom = RoomFactory.IRoom(this, worldWidth, worldHeight);
+        Room starterRoom = RoomFactory.starterRoom(this, worldWidth, worldHeight);
         rooms.add(starterRoom);
         currentRoom = starterRoom;
 
@@ -59,6 +60,14 @@ public class GameWorld {
 
     public Room getCurrentRoom() {
         return currentRoom;
+    }
+
+    public double getCurrentWidthScale() {
+        return (double) currentRoom.getTileWidth() / Tile.getDefaultTileWidth();
+    }
+
+    public double getCurrentHeightScale() {
+        return (double) currentRoom.getTileHeight() / Tile.getDefaultTileHeight();
     }
 
     public GamePanel getGamePanel() {

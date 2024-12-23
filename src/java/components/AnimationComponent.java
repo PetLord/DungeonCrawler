@@ -1,5 +1,6 @@
 package components;
 import objects.Entity;
+import objects.characters.Character;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AnimationComponent {
-    private final Entity entity;
+    private final Character character;
     private AnimationState currentState;
     private final Map<AnimationState, ArrayList<Image>> animationFrames = new HashMap<>();
     private final Map<AnimationState, Integer> animationSpeed = new HashMap<>();
@@ -15,16 +16,17 @@ public class AnimationComponent {
     private int currentFrame;
     private long lastFrameTime;
 
-
-    public AnimationComponent(Entity entity) {
+    public AnimationComponent(Character character) {
         this.currentFrame = 0;
         this.currentState = null;
-        this.entity = entity;
+        this.currentFrames = null;
+        this.character = character;
         this.lastFrameTime = System.currentTimeMillis();
     }
 
     public void update() {
         int animSpeed = animationSpeed.get(currentState);
+
         if (System.currentTimeMillis() - lastFrameTime >= animSpeed) {
             currentFrame = (currentFrame + 1) % currentFrames.size();  // Loop through frames
             lastFrameTime = System.currentTimeMillis();
@@ -40,14 +42,15 @@ public class AnimationComponent {
     }
 
     public Image getCurrentFrame() {
-        if(entity.hasComponent(MovementComponent.class)){
-            MovementComponent movementComponent = entity.getComponent(MovementComponent.class);
+        if(character.hasComponent(MovementComponent.class)){
+            MovementComponent movementComponent = character.getComponent(MovementComponent.class);
         }
         return currentFrames.get(currentFrame);
     }
 
     public void setCurrentState(AnimationState currentState) {
         this.currentState = currentState;
+        currentFrames = animationFrames.get(currentState);
     }
 
    public void addAnimationFrames(AnimationState state, ArrayList<Image> frames, double speed)
@@ -69,6 +72,10 @@ public class AnimationComponent {
    public boolean hasAnimationFrames(AnimationState state)
    {
        return this.animationFrames.containsKey(state);
+   }
+
+   public AnimationState getCurrentState() {
+       return this.currentState;
    }
 
 }

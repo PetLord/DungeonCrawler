@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class FloorFactory {
+public abstract class FloorFactory {
     public static Floor getDefaultFloor1(int x, int y, int rows, int cols, int tileWidth, int tileHeight) {
         return new Floor(x, y, rows, cols, tileWidth, tileHeight, getDefaultFloorImage());
     }

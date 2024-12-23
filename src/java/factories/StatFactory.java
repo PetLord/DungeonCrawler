@@ -3,7 +3,7 @@ package factories;
 import stats.CharacterStat;
 import stats.WeaponStat;
 
-public class StatFactory {
+public abstract class StatFactory {
 
     //protected int health;
     //    protected int mana;
@@ -49,7 +49,7 @@ public class StatFactory {
     public static WeaponStat getDefaultWeaponStat(){
         int damage = 5;
         int range = 1;
-        int attackSpeed = 1;
+        double attackSpeed = 2;
 
         return new WeaponStat(damage, range, attackSpeed);
     }

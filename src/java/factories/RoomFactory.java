@@ -5,11 +5,11 @@ import objects.structures.Room;
 import objects.structures.Wall;
 import objects.structures.WallDirection;
 
-public class RoomFactory {
+public abstract class RoomFactory {
 
     public static Room starterRoom(GameWorld gameWorld, int playableAreaWidth, int playableAreaHeight) {
-        int numRows = 30;
-        int numCols = 30;
+        int numRows = 16;
+        int numCols = 16;
         int tileWidth = Math.max(1, playableAreaWidth / numCols);
         int tileHeight = Math.max(1, playableAreaHeight / numRows);
         Room defaultRoom = new Room(numRows, numCols, tileWidth, tileHeight);

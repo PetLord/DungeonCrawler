@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class StartPointFactory {
+public abstract class StartPointFactory {
 
     public static StartPoint getDefaultStartPoint(int startRow, int startCol, int tileWidth, int tileHeight) {
         return new StartPoint(startRow, startCol, tileWidth, tileHeight, getDefaultStartPointImage());

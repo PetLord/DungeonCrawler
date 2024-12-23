@@ -1,20 +1,27 @@
 package components;
 
 import gameWindow.GamePanel;
-import objects.Entity;
+
+import inputHandling.PlayerKeyboardListener;
+import inputHandling.PlayerMouseListener;
+import objects.characters.Player;
 
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 
 public class PlayerInputComponent {
-    private final Entity entity;
+    private final Player player;
     private final KeyListener keylistener;
+    private final MouseListener mouselistener;
     private GamePanel gamePanel;
 
-    public PlayerInputComponent(Entity entity, GamePanel gamePanel) {
-        this.entity = entity;
-        this.keylistener = new PlayerInputListener(entity);
+    public PlayerInputComponent(Player player, GamePanel gamePanel) {
+        this.player = player;
+        this.keylistener = new PlayerKeyboardListener(player);
+        this.mouselistener = new PlayerMouseListener(player);
         this.gamePanel = gamePanel;
         gamePanel.addKeyListener(keylistener);
+        gamePanel.addMouseListener(mouselistener);
     }
 
     public void setGamePanel(GamePanel gamePanel) {

@@ -36,4 +36,12 @@ public class Tile implements Comparable<Tile> {
     public int getY() {
         return y;
     }
+
+    public static int getDefaultTileWidth(){
+        return 50;
+    }
+
+    public static int getDefaultTileHeight(){
+        return 50;
+    }
 }

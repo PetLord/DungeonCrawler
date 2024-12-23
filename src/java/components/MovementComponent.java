@@ -1,18 +1,17 @@
 package components;
 
 import objects.Entity;
-import objects.characters.Character;
 
 public class MovementComponent {
     private final int baseSpeed;
     private double adjustedSpeed;
     private final static double speedMultiplier = 1.5;
-    private CharacterDirection direction;
+    private Direction direction;
     private int vx, vy;
     private boolean isSprinting;
 
     public MovementComponent(int baseSpeed, int tileWidth, int tileHeight) {
-        direction = CharacterDirection.RIGHT;
+        direction = Direction.EAST;
         this.baseSpeed = baseSpeed;
         setTileSizeMultiplier(tileWidth, tileHeight);
         this.vx = 0;
@@ -45,6 +44,7 @@ public class MovementComponent {
     public void walk() {
         isSprinting = false;
     }
+
     public void updatePosition(Entity entity) {
         int moveSpeed = getSpeed();
 
@@ -55,44 +55,46 @@ public class MovementComponent {
 
         // Update direction based on vx and vy values independently
         if (vy > 0) {
-            direction = CharacterDirection.DOWN;
+            direction = Direction.SOUTH;
         } else if (vy < 0) {
-            direction = CharacterDirection.UP;
+            direction = Direction.NORTH;
         }
 
+
         if (vx > 0) {
-            direction = CharacterDirection.RIGHT;
+            direction = Direction.EAST;
         } else if (vx < 0) {
-            direction = CharacterDirection.LEFT;
+            direction = Direction.WEST;
         }
+
+        entity.setDirection(direction);
 
         // Set the animation state based on direction and movement
         if (entity.hasComponent(AnimationComponent.class)) {
             AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
-
             // If moving (any direction), set the appropriate running or walking state
             if (vx != 0 || vy != 0) {
                 if (isSprinting) {
                     switch (direction) {
-                        case LEFT -> animationComponent.setAnimationState(AnimationState.RUNNING_LEFT);
-                        case RIGHT -> animationComponent.setAnimationState(AnimationState.RUNNING_RIGHT);
-                        //case DOWN -> animationComponent.setAnimationState(AnimationState.RUNNING_DOWN);
-                        case UP -> animationComponent.setAnimationState(AnimationState.RUNNING_UP);
+                        case WEST -> animationComponent.setAnimationState(AnimationState.RUNNING_LEFT);
+                        case EAST -> animationComponent.setAnimationState(AnimationState.RUNNING_RIGHT);
+                        case SOUTH -> animationComponent.setAnimationState(AnimationState.RUNNING_DOWN);
+                        case NORTH -> animationComponent.setAnimationState(AnimationState.RUNNING_UP);
                     }
                 } else {
                     switch (direction) {
-                        case LEFT -> animationComponent.setAnimationState(AnimationState.WALKING_LEFT);
-                        case RIGHT -> animationComponent.setAnimationState(AnimationState.WALKING_RIGHT);
-                        //case DOWN -> animationComponent.setAnimationState(AnimationState.WALKING_DOWN);
-                        case UP -> animationComponent.setAnimationState(AnimationState.WALKING_UP);
+                        case WEST -> animationComponent.setAnimationState(AnimationState.WALKING_LEFT);
+                        case EAST -> animationComponent.setAnimationState(AnimationState.WALKING_RIGHT);
+                        case SOUTH -> animationComponent.setAnimationState(AnimationState.WALKING_DOWN);
+                        case NORTH -> animationComponent.setAnimationState(AnimationState.WALKING_UP);
                     }
                 }
             } else { // if idle
                 switch (direction) {
-                    case LEFT -> animationComponent.setAnimationState(AnimationState.IDLE_LEFT);
-                    case RIGHT -> animationComponent.setAnimationState(AnimationState.IDLE_RIGHT);
-                    //case DOWN -> animationComponent.setAnimationState(AnimationState.IDLE_DOWN);
-                    case UP -> animationComponent.setAnimationState(AnimationState.IDLE_UP);
+                    case WEST -> animationComponent.setAnimationState(AnimationState.IDLE_LEFT);
+                    case EAST -> animationComponent.setAnimationState(AnimationState.IDLE_RIGHT);
+                    case SOUTH -> animationComponent.setAnimationState(AnimationState.IDLE_DOWN);
+                    case NORTH -> animationComponent.setAnimationState(AnimationState.IDLE_UP);
                 }
             }
         }
@@ -128,7 +130,7 @@ public class MovementComponent {
         return isSprinting ? (int)(adjustedSpeed * speedMultiplier) : (int)adjustedSpeed;
     }
 
-    public CharacterDirection getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 }

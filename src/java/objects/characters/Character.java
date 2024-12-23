@@ -1,24 +1,32 @@
 package objects.characters;
 import characterProfessions.*;
+import components.Direction;
 import equipment.Equipment;
+import gameWindow.GamePanel;
+import objects.Entity;
+import objects.structures.Room;
 import objects.structures.StartPoint;
 import stats.CharacterStat;
-import objects.Entity;
+
+import java.awt.geom.Point2D;
 
 public abstract class Character extends Entity {
+    public abstract Point2D getHandPosition(Direction direction);
+
     private final String name;
     private int currentHealth;
-    private CharacterProfession characterProfession;
+    private final CharacterProfession characterProfession;
     private CharacterStat characterStat;
     private Equipment equipment;
 
-    public Character(String name, CharacterProfession characterProfession, int width, int height) {
-        super(0,0, width, height);
+    public Character(String name, CharacterProfession characterProfession, int width, int height, GamePanel gamePanel) {
+        super(0, 0, width, height, gamePanel);
         this.name = name;
         this.characterProfession = characterProfession;
         this.characterStat = characterProfession.getStats();
         currentHealth = characterStat.getHealth();
         this.equipment = new Equipment();
+
     }
 
     public String getName() {
@@ -33,13 +41,13 @@ public abstract class Character extends Entity {
         return characterProfession;
     }
 
-    public void printMainStats(){
+    public void printMainStats() {
         System.out.println("Name: " + name);
         System.out.println("Health: " + currentHealth + " /" + characterStat.getHealth());
         System.out.println("Mana: " + characterStat.getMana());
     }
 
-    public void printStats(){
+    public void printStats() {
         System.out.println("Name: " + name);
         System.out.println("Health: " + currentHealth + " /" + characterStat.getHealth());
         System.out.println("Mana: " + characterStat.getMana());
@@ -64,7 +72,7 @@ public abstract class Character extends Entity {
     }
 
     public void moveTo(StartPoint sp) {
-        if(sp == null){
+        if (sp == null) {
             return;
         }
         this.setX(sp.getStartRow() * sp.getTileWidth());
@@ -75,7 +83,15 @@ public abstract class Character extends Entity {
         this.currentHealth = currentHealth;
     }
 
-    public Equipment getEquipment(){
+    public Equipment getEquipment() {
         return equipment;
+    }
+
+    @Override
+    public void setDirection(Direction direction) {
+        if(equipment.getWeapon() != null){
+            equipment.getWeapon().setDirection(direction);
+        }
+        super.setDirection(direction);
     }
 }
