@@ -1,9 +1,9 @@
-import gameWindow.GameFrame;
+import windows.MainFrame;
 
 public class TestWindows {
 
     public static void main(String[] args) {
-        GameFrame frame = new GameFrame();
+        MainFrame frame = new MainFrame();
     }
 
 }

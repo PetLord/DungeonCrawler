@@ -6,10 +6,20 @@ Animation 9 nagyjabol done, needs more keyframes
 Weapons 6
  -- weapon holding: When facing up render weapons first, then player done
  -- different offset when facing left or right done
- -- fix weapon range
+ -- fix weapon range ~
+Menu 5
 Enemies 6
 Add more rooms 3
 Random floor generation 10
 Scalable character 2
 Skill tree? 9
 
+Projekt szuksegletek:
+
+Szálak (vagy Timer) half done
+Váltható nézetek, vagy több ablak done
+Grafika 1 pont done
+Szöveges fájlok kezelése none
+Hangok használata 1 pont none
+Stream-ek használata none (
+Komplexitás: minimum 8 darab lényeges osztály done
