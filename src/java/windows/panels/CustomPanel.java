@@ -42,5 +42,6 @@ public abstract class CustomPanel extends JPanel {
     public void setDimensions(int width, int height) {
         this.width = width;
         this.height = height;
+        this.setSize(width, height);
     }
 }

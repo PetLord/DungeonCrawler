@@ -4,6 +4,7 @@ import windows.panels.gamePanel.characterProfessions.CharacterProfession;
 import windows.panels.gamePanel.components.*;
 import windows.panels.gamePanel.equipment.weapons.Weapon;
 import windows.panels.gamePanel.GamePanel;
+import windows.panels.gamePanel.factories.PlayerFactory;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -16,6 +17,7 @@ public class Player extends Character {
 
     public Player(String name, CharacterProfession characterProfession, GamePanel gamePanel) {
         super(name, characterProfession, defaultPlayerWidth, defaultPlayerHeight, gamePanel);
+        PlayerFactory.loadDefaultPlayerAnimationFrames(this);
     }
 
     public void addAnimationFrames(AnimationState state, ArrayList<Image> frames, double speed) {

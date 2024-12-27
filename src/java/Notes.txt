@@ -24,4 +24,4 @@ Hangok használata: Sounds class
 Stream-ek használata: SoundPlayer
 Komplexitás: minimum 8 darab lényeges osztály: ..
 
-!! fix setdimension for gameworldOptions Menu
+!! known bug: if you rescale while playing, the player will be misplaced

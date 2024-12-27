@@ -2,15 +2,18 @@ package windows.panels.gamePanel;
 
 import windows.panels.gamePanel.characterProfessions.CharacterProfession;
 import windows.panels.gamePanel.characterProfessions.playableCharacters.Fighter;
+import windows.panels.gamePanel.components.GraphicsComponent;
 import windows.panels.gamePanel.components.MovementComponent;
 import windows.panels.gamePanel.factories.PlayerFactory;
 import windows.panels.gamePanel.factories.RoomFactory;
 import windows.panels.gamePanel.factories.StatFactory;
+import windows.panels.gamePanel.objects.Entity;
 import windows.panels.gamePanel.objects.characters.Player;
 import windows.panels.gamePanel.objects.structures.Room;
 import windows.panels.gamePanel.objects.structures.Tile;
 import windows.panels.gamePanel.stats.CharacterStat;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class GameWorld {
@@ -35,6 +38,18 @@ public class GameWorld {
         CharacterProfession f = new Fighter(baseStats);
         player = PlayerFactory.createDefaultPlayer(f, gamePanel, this);
         currentRoom.addEntity(player);
+
+        gamepanel.startGameThread();
+    }
+
+    public void render(Graphics2D g2){
+        getCurrentRoom().render(g2);
+
+        for (Entity entity : getCurrentRoom().getEntities()) {
+            if (entity.hasComponent(GraphicsComponent.class)) {
+                entity.render(g2);
+            }
+        }
     }
 
     public int getWorldHeight() {

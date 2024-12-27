@@ -1,5 +1,5 @@
 package windows.panels.gamePanel.components;
-import windows.panels.gamePanel.objects.Entity;
+
 import windows.panels.gamePanel.objects.characters.Character;
 
 import java.awt.*;
@@ -16,19 +16,28 @@ public class AnimationComponent {
     private int currentFrame;
     private long lastFrameTime;
 
+    private static final int FPS_TO_MILLISECONDS = 1000; // Conversion constant
+
     public AnimationComponent(Character character) {
-        this.currentFrame = 0;
-        this.currentState = null;
-        this.currentFrames = null;
         this.character = character;
+        this.setAnimationState(AnimationState.IDLE_RIGHT);
+        this.currentFrames = animationFrames.getOrDefault(currentState, new ArrayList<>());
+        this.currentFrame = 0;
         this.lastFrameTime = System.currentTimeMillis();
     }
 
     public void update() {
-        int animSpeed = animationSpeed.get(currentState);
+        if (currentFrames == null || currentFrames.isEmpty()) {
+            return; // Guard against uninitialized or empty frames
+        }
+
+        Integer animSpeed = animationSpeed.get(currentState);
+        if (animSpeed == null) {
+            return; // Guard against missing animation speed for current state
+        }
 
         if (System.currentTimeMillis() - lastFrameTime >= animSpeed) {
-            currentFrame = (currentFrame + 1) % currentFrames.size();  // Loop through frames
+            currentFrame = (currentFrame + 1) % currentFrames.size(); // Loop through frames
             lastFrameTime = System.currentTimeMillis();
         }
     }
@@ -37,45 +46,36 @@ public class AnimationComponent {
         if (currentState != state && animationFrames.containsKey(state)) {
             currentState = state;
             currentFrames = animationFrames.get(state);
-            currentFrame = 0;
+            currentFrame = 0; // Reset to the first frame of the new state
         }
     }
 
     public Image getCurrentFrame() {
-        if(character.hasComponent(MovementComponent.class)){
-            MovementComponent movementComponent = character.getComponent(MovementComponent.class);
+        if (currentFrames == null || currentFrames.isEmpty()) {
+            return null; // Guard against uninitialized or empty frames
         }
         return currentFrames.get(currentFrame);
     }
 
-    public void setCurrentState(AnimationState currentState) {
-        this.currentState = currentState;
-        currentFrames = animationFrames.get(currentState);
+    public void addAnimationFrames(AnimationState state, ArrayList<Image> frames, double speed) {
+        if (frames == null || frames.isEmpty() || speed <= 0) {
+            throw new IllegalArgumentException("Invalid frames or speed");
+        }
+
+        animationFrames.put(state, frames);
+        animationSpeed.put(state, (int) (FPS_TO_MILLISECONDS / speed));
     }
 
-   public void addAnimationFrames(AnimationState state, ArrayList<Image> frames, double speed)
-   {
-        if(this.animationFrames.containsKey(state)){
-            this.animationFrames.replace(state, frames);
-            this.animationSpeed.replace(state, (int)(1000 / speed));
-        } else {
-            this.animationFrames.put(state, frames);
-            this.animationSpeed.put(state, (int)(1000 / speed));
-        }
-   }
+    public ArrayList<Image> getAnimationFrames(AnimationState state) {
+        return animationFrames.get(state);
+    }
 
-   public ArrayList<Image> getAnimationFrames(AnimationState state)
-   {
-       return this.animationFrames.get(state);
-   }
+    public boolean hasAnimationFrames(AnimationState state) {
+        return animationFrames.containsKey(state);
+    }
 
-   public boolean hasAnimationFrames(AnimationState state)
-   {
-       return this.animationFrames.containsKey(state);
-   }
-
-   public AnimationState getCurrentState() {
-       return this.currentState;
-   }
+    public AnimationState getCurrentState() {
+        return currentState;
+    }
 
 }

@@ -31,10 +31,9 @@ public class MainFrame extends JFrame {
         //this.height = Toolkit.getDefaultToolkit().getScreenSize().height;
         //this.width = Toolkit.getDefaultToolkit().getScreenSize().width;
 
-        this.height = 768;
-        this.width = 1024;
+        //this.setDimension(1024, 768);
+        this.setDimension(1920, 1080);
         this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - width / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - height / 2);
-        this.setSize(width, height);
         this.cardLayout = new CardLayout();
         this.setLayout(cardLayout);
         this.setBackground(Color.BLACK);
@@ -124,7 +123,7 @@ public class MainFrame extends JFrame {
         this.height = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getResolutionHeight();
         this.setSize(width, height);
         this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - width / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - height / 2);
-        notifyPanels();
+        notifyPanelSize();
     }
 
     public void playSound(Sound sound){
@@ -145,15 +144,15 @@ public class MainFrame extends JFrame {
         } else {
             // Switch to fullscreen mode
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+            this.setDimension(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
             this.setUndecorated(true);
             gd.setFullScreenWindow(this); // Enter fullscreen mode
-            notifyPanels();
+            notifyPanelSize();
         }
         this.setVisible(true);
     }
 
-    private void notifyPanels(){
+    private void notifyPanelSize(){
         for(CustomPanel panel : panels.values()){
             panel.setDimensions(width, height);
         }
@@ -161,5 +160,21 @@ public class MainFrame extends JFrame {
 
     public GamePanel getGamePanel(){
         return (GamePanel)panels.get(PanelType.GAME);
+    }
+
+    public void setDimension(int width, int height){
+        this.width = width;
+        this.height = height;
+        this.setSize(width, height);
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
     }
 }

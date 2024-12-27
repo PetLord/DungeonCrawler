@@ -25,7 +25,7 @@ public abstract class PlayerFactory {
         Image defaultImage = loadDefaultPlayerImage();
 
         Player tempPlayer = new Player(defaultName, profession, gamePanel);
-        loadDefaultPlayerAnimationFrames(tempPlayer);
+        //loadDefaultPlayerAnimationFrames(tempPlayer);
 
         int tileWidth = gameWorld.getCurrentRoom().getTileWidth();
         int tileHeight = gameWorld.getCurrentRoom().getTileHeight();
@@ -54,7 +54,7 @@ public abstract class PlayerFactory {
         }
     }
 
-    private static void loadDefaultPlayerAnimationFrames(Player player){
+    public static void loadDefaultPlayerAnimationFrames(Player player){
         player.addAnimationFrames(AnimationState.IDLE_LEFT, PlayerAnimations.getIdleLeftFrames(), idleAnimationSpeed);
         player.addAnimationFrames(AnimationState.IDLE_RIGHT, PlayerAnimations.getIdleRightFrames(), idleAnimationSpeed);
         player.addAnimationFrames(AnimationState.IDLE_UP, PlayerAnimations.getIdleUpFrames(), idleAnimationSpeed);

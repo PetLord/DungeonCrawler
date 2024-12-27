@@ -10,6 +10,7 @@ public class FullScreenButton extends CustomButton {
 
     public void buttonPressed() {
         panel.toggleFullScreen();
+
     }
 
 }

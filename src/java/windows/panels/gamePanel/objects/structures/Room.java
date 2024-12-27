@@ -1,5 +1,6 @@
 package windows.panels.gamePanel.objects.structures;
 
+import windows.panels.gamePanel.components.MovementComponent;
 import windows.panels.gamePanel.objects.Entity;
 import java.awt.*;
 import java.util.ArrayList;
@@ -134,11 +135,36 @@ public class Room {
         return startPoints;
     }
 
-   public void setWidth(int width){
+    public void setWidth(int width) {
+        int oldWidth = this.getWidth();
+        if (oldWidth == 0) return; // Avoid division by zero
+
+        double scaleX = (double) width / oldWidth;
         this.tileWidth = width / numCols;
+
+        for (Entity entity : entities) {
+            if (entity.hasComponent(MovementComponent.class)) {
+                entity.getComponent(MovementComponent.class).setTileSizeMultiplier(tileWidth, tileHeight);
+            }
+            int newX = (int) (entity.getX() * scaleX);
+            entity.setX(newX);
+        }
     }
 
-    public void setHeight(int height){
+    public void setHeight(int height) {
+        int oldHeight = this.getHeight();
+        if (oldHeight == 0) return; // Avoid division by zero
+
+        double scaleY = (double) height / oldHeight;
         this.tileHeight = height / numRows;
-   }
+
+        for (Entity entity : entities) {
+            if (entity.hasComponent(MovementComponent.class)) {
+                entity.getComponent(MovementComponent.class).setTileSizeMultiplier(tileWidth, tileHeight);
+            }
+            int newY = (int) (entity.getY() * scaleY);
+            entity.setY(newY);
+        }
+    }
+
 }

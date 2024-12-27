@@ -34,9 +34,11 @@ public class OptionsPanel extends CustomPanel {
     public void onPanelActivation(PanelType previousPanelType) {
         if(previousPanelType == PanelType.GAME){
             buttonPanel.continueButton.setVisible(true);
+            buttonPanel.exitGameButton.setVisible(true);
             buttonPanel.backButton.setVisible(false);
         } else {
             buttonPanel.continueButton.setVisible(false);
+            buttonPanel.exitGameButton.setVisible(false);
             buttonPanel.backButton.setVisible(true);
         }
     }
@@ -44,6 +46,8 @@ public class OptionsPanel extends CustomPanel {
     @Override
     public void onPanelDeactivation(PanelType newPanelType) {
         buttonPanel.continueButton.setVisible(false);
+        buttonPanel.exitGameButton.setVisible(false);
+        buttonPanel.backButton.setVisible(false);
     }
 
     public int getResolutionWidth() {
@@ -59,6 +63,7 @@ public class OptionsPanel extends CustomPanel {
         private final CustomButton applyButton;
         private final CustomButton backButton;
         private final CustomButton continueButton;
+        private final CustomButton exitGameButton;
         public ButtonPanel(CustomPanel customPanel){
             super();
             this.setOpaque(false);
@@ -70,15 +75,19 @@ public class OptionsPanel extends CustomPanel {
             applyButton = new CustomButton("Apply", customPanel);
             backButton = new CustomButton("Back", customPanel);
             continueButton = new CustomButton("Continue", customPanel);
+            exitGameButton = new CustomButton("Exit Game", customPanel);
 
             defaultButton.addActionListener(e -> defaultButtonPressed());
             applyButton.addActionListener(e -> applyButtonPressed());
             backButton.addActionListener(e -> backButtonPressed());
             continueButton.addActionListener(e -> continueButtonPressed());
+            exitGameButton.addActionListener(e -> exitGameButtonPressed());
             this.add(defaultButton);
             this.add(applyButton);
             this.add(backButton);
             this.add(continueButton);
+            this.add(exitGameButton);
+            exitGameButton.setVisible(false);
             continueButton.setVisible(false);
         }
 
@@ -112,6 +121,11 @@ public class OptionsPanel extends CustomPanel {
 
     private void continueButtonPressed() {
         mainFrame.switchToPanel(PanelType.GAME);
+    }
+
+    private void exitGameButtonPressed() {
+        mainFrame.switchToPanel(PanelType.GAME);
+        mainFrame.switchToPanel(PanelType.MAIN_MENU);
     }
 
     private static Image getBackImage(){
