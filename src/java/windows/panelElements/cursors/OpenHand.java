@@ -11,7 +11,7 @@ public class OpenHand extends CustomCursor {
 
     public OpenHand() {
         super(CursorType.OPEN_HAND);
-        cursor = Toolkit.getDefaultToolkit().createCustomCursor(getImage(), new Point(0, 0), "openHand");
+        cursor = Toolkit.getDefaultToolkit().createCustomCursor(getImage(), new Point(8, 4), "openHand");
     }
 
     public void applyToComponent(Component component) {

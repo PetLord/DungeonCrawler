@@ -1,6 +1,7 @@
 package windows.panels.optionsPanel.tabs;
 
 import windows.panelElements.buttons.FullScreenButton;
+import windows.panelElements.buttons.ResolutionSelector;
 import windows.panels.CustomPanel;
 
 import javax.swing.*;
@@ -8,6 +9,8 @@ import java.awt.*;
 
 public class DisplayTab extends CustomTab {
     CustomPanel panel;
+    FullScreenButton fullScreenButton;
+    ResolutionSelector resolutionSelector;
 
     public DisplayTab(CustomPanel panel) {
         super(CustomTabType.DISPLAY);
@@ -26,7 +29,18 @@ public class DisplayTab extends CustomTab {
         gbc.fill = GridBagConstraints.NONE; // Do not stretch
 
         // Add your button(s)
-        FullScreenButton fullScreenButton = new FullScreenButton(panel);
+        fullScreenButton = new FullScreenButton(panel);
+        resolutionSelector = new ResolutionSelector(panel.getMainFrame());
         this.add(fullScreenButton, gbc);
+        gbc.gridy++;
+        this.add(resolutionSelector, gbc);
+    }
+
+    public int getResolutionWidth() {
+        return resolutionSelector.getResolution().getFirst();
+    }
+
+    public int getResolutionHeight() {
+        return resolutionSelector.getResolution().getSecond();
     }
 }

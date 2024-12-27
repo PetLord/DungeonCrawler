@@ -14,8 +14,8 @@ import windows.panels.gamePanel.stats.CharacterStat;
 import java.util.ArrayList;
 
 public class GameWorld {
-    private final int worldHeight;
-    private final int worldWidth;
+    private int worldHeight;
+    private int worldWidth;
     private final GamePanel gamePanel;
     private final ArrayList<Room> rooms;
     private Room currentRoom;
@@ -80,5 +80,12 @@ public class GameWorld {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void setDimensions(int width, int height) {
+        worldWidth = width;
+        worldHeight = height;
+        currentRoom.setWidth(width);
+        currentRoom.setHeight(height);
     }
 }

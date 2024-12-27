@@ -1,5 +1,6 @@
 package windows.panels.gamePanel.inputHandling;
 
+import windows.panels.gamePanel.GamePanel;
 import windows.panels.gamePanel.components.MovementComponent;
 import windows.panels.gamePanel.objects.characters.Player;
 
@@ -9,10 +10,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerKeyboardListener implements KeyListener {
+    private final GamePanel gamePanel;
     private final Player player;
     private final Set<Integer> activeKeys = new HashSet<>();
 
-    public PlayerKeyboardListener(Player player) {
+    public PlayerKeyboardListener(GamePanel gamePanel, Player player) {
+        this.gamePanel = gamePanel;
         this.player = player;
     }
 
@@ -24,7 +27,10 @@ public class PlayerKeyboardListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (activeKeys.add(key)) { // Add key only if it's not already present
+
+        if (key == KeyEvent.VK_ESCAPE) {
+            gamePanel.onEscapePressed();
+        } else if (activeKeys.add(key)) { // Add key only if it's not already present
             updateMovement();
         }
     }

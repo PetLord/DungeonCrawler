@@ -16,10 +16,12 @@ Skill tree? 9
 
 Projekt szuksegletek:
 
-Szálak (vagy Timer) half done
-Váltható nézetek, vagy több ablak done
-Grafika 1 pont done
-Szöveges fájlok kezelése none
-Hangok használata 1 pont none
-Stream-ek használata none (
-Komplexitás: minimum 8 darab lényeges osztály done
+Szálak (vagy Timer): game thread es SoundPlayer
+Váltható nézetek, vagy több ablak: panels
+Grafika: gameworld, player, enemies, weapons, menu
+Szöveges fájlok kezelése: nincs
+Hangok használata: Sounds class
+Stream-ek használata: SoundPlayer
+Komplexitás: minimum 8 darab lényeges osztály: ..
+
+!! fix setdimension for gameworldOptions Menu

@@ -1,35 +1,40 @@
 package windows.panels.menuPanel;
 
+import audio.Sound;
+import audio.SoundFactory;
 import windows.MainFrame;
 import windows.panelElements.buttons.ExitButton;
 import windows.panelElements.buttons.OptionsButton;
 import windows.panelElements.buttons.PlayButton;
 import windows.panels.CustomPanel;
+import windows.panels.PanelType;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class MenuPanel extends CustomPanel {
     private final GridBagLayout gb;
     private final GridBagConstraints gbc;
     private final Image backImage;
-    private final int width;
-    private final int height;
-
+    private Sound currentSound;
 
 
     public MenuPanel(MainFrame mainFrame) {
         super(mainFrame);
         gb = new GridBagLayout();
         gbc = new GridBagConstraints();
-        width = Toolkit.getDefaultToolkit().getScreenSize().width;
-        height = Toolkit.getDefaultToolkit().getScreenSize().height;
+        width = mainFrame.getWidth();
+        height = mainFrame.getHeight();
         setPreferredSize(new Dimension(width, height));
         backImage = getBackImage();
 
-        // Set the panel layout to GridBagLayout
+        handleLayout();
+    }
+
+    private void handleLayout(){
         this.setLayout(gb);
 
         // Set default GridBagConstraints
@@ -63,6 +68,18 @@ public class MenuPanel extends CustomPanel {
         gbc.gridheight = 1; // Buttons should not stretch vertically, no span
     }
 
+    private void playMenuSound(){
+        Random rand = new Random();
+        currentSound = switch(rand.nextInt(4)) {
+            default -> SoundFactory.getMenuSound1();
+            case 1 -> SoundFactory.getMenuSound2();
+            case 2 -> SoundFactory.getMenuSound3();
+            case 3 -> SoundFactory.getMenuSound4();
+        };
+        mainFrame.playSound(currentSound);
+    }
+
+
     private static Image getBackImage(){
         try {
             return ImageIO.read(new File("resources/images/menu/orangeMenuBack.png"));
@@ -79,12 +96,16 @@ public class MenuPanel extends CustomPanel {
     }
 
     @Override
-    public void onPanelActivation() {
-
+    public void onPanelActivation(PanelType previousPanelType) {
+        if(previousPanelType != PanelType.OPTIONS_MENU){
+            playMenuSound();
+        }
     }
 
     @Override
-    public void onPanelDeactivation() {
-
+    public void onPanelDeactivation(PanelType newPanelType) {
+        if(newPanelType != PanelType.OPTIONS_MENU){
+            mainFrame.stopSound(currentSound);
+        }
     }
 }

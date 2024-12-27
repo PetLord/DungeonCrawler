@@ -9,5 +9,7 @@ public class CustomTab extends JPanel {
     public CustomTab(CustomTabType type) {
         this.type = type;
         this.setOpaque(false);
+        this.setForeground(Color.WHITE);
     }
+
 }

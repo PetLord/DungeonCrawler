@@ -7,9 +7,11 @@ import windows.panelElements.cursors.CustomCursor;
 import javax.swing.*;
 
 public abstract class CustomPanel extends JPanel {
+    protected int width;
+    protected int height;
     protected MainFrame mainFrame;
-    public abstract void onPanelActivation();
-    public abstract void onPanelDeactivation();
+    public abstract void onPanelActivation(PanelType previousPanelType);
+    public abstract void onPanelDeactivation(PanelType newPanelType);
 
     public CustomPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -21,4 +23,24 @@ public abstract class CustomPanel extends JPanel {
         customCursor.applyToComponent(this);
     }
 
+    public void toggleFullScreen() {
+        mainFrame.toggleFullScreen();
+    }
+
+    public MainFrame getMainFrame() {
+        return mainFrame;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setDimensions(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
 }

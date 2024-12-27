@@ -17,7 +17,7 @@ public class PlayerInputComponent {
 
     public PlayerInputComponent(Player player, GamePanel gamePanel) {
         this.player = player;
-        this.keylistener = new PlayerKeyboardListener(player);
+        this.keylistener = new PlayerKeyboardListener(gamePanel, player);
         this.mouselistener = new PlayerMouseListener(player);
         this.gamePanel = gamePanel;
         gamePanel.addKeyListener(keylistener);

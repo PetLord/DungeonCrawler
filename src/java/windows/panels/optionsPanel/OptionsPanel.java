@@ -13,47 +13,78 @@ import java.io.IOException;
 
 public class OptionsPanel extends CustomPanel {
     // buttons to add: fullscreen, sounds, music, back, apply, resolution (maybe)
-    private Image backImage;
-    private int width;
-    private int height;
-    private OptionsTabbedPane optionsTabbedPane;
+    private final Image backImage;
+    private final OptionsTabbedPane optionsTabbedPane;
+    private final ButtonPanel buttonPanel;
     public OptionsPanel(MainFrame mainFrame) {
         super(mainFrame);
         this.setLayout(new BorderLayout());
-        width = Toolkit.getDefaultToolkit().getScreenSize().width;
-        height = Toolkit.getDefaultToolkit().getScreenSize().height;
+        width = mainFrame.getWidth();
+        height = mainFrame.getHeight();
         backImage = getBackImage();
         optionsTabbedPane = new OptionsTabbedPane(this);
         this.add(optionsTabbedPane, BorderLayout.CENTER);
 
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setOpaque(false);
-        FlowLayout flowLayout = new FlowLayout();
-        flowLayout.setHgap(20);
-        buttonsPanel.setLayout(flowLayout);
+        buttonPanel = new ButtonPanel(this);
 
-        CustomButton defaultButton = new CustomButton("Default", this);
-        CustomButton applyButton = new CustomButton("Apply", this);
-        CustomButton backButton = new CustomButton("Back", this);
-        defaultButton.addActionListener(e -> defaultButtonPressed());
-        applyButton.addActionListener(e -> applyButtonPressed());
-        backButton.addActionListener(e -> backButtonPressed());
-        buttonsPanel.add(defaultButton);
-        buttonsPanel.add(applyButton);
-        buttonsPanel.add(backButton);
-
-
-        this.add(buttonsPanel, BorderLayout.SOUTH);
+        this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
     @Override
-    public void onPanelActivation() {
-
+    public void onPanelActivation(PanelType previousPanelType) {
+        if(previousPanelType == PanelType.GAME){
+            buttonPanel.continueButton.setVisible(true);
+            buttonPanel.backButton.setVisible(false);
+        } else {
+            buttonPanel.continueButton.setVisible(false);
+            buttonPanel.backButton.setVisible(true);
+        }
     }
 
     @Override
-    public void onPanelDeactivation() {
+    public void onPanelDeactivation(PanelType newPanelType) {
+        buttonPanel.continueButton.setVisible(false);
+    }
 
+    public int getResolutionWidth() {
+        return optionsTabbedPane.getResolutionWidth();
+    }
+
+    public int getResolutionHeight() {
+        return optionsTabbedPane.getResolutionHeight();
+    }
+
+    public class ButtonPanel extends JPanel{
+        private final CustomButton defaultButton;
+        private final CustomButton applyButton;
+        private final CustomButton backButton;
+        private final CustomButton continueButton;
+        public ButtonPanel(CustomPanel customPanel){
+            super();
+            this.setOpaque(false);
+            FlowLayout flowLayout = new FlowLayout();
+            flowLayout.setHgap(20);
+            this.setLayout(flowLayout);
+
+            defaultButton = new CustomButton("Default", customPanel);
+            applyButton = new CustomButton("Apply", customPanel);
+            backButton = new CustomButton("Back", customPanel);
+            continueButton = new CustomButton("Continue", customPanel);
+
+            defaultButton.addActionListener(e -> defaultButtonPressed());
+            applyButton.addActionListener(e -> applyButtonPressed());
+            backButton.addActionListener(e -> backButtonPressed());
+            continueButton.addActionListener(e -> continueButtonPressed());
+            this.add(defaultButton);
+            this.add(applyButton);
+            this.add(backButton);
+            this.add(continueButton);
+            continueButton.setVisible(false);
+        }
+
+        public CustomButton getContinueButton() {
+            return continueButton;
+        }
     }
 
     @Override
@@ -63,15 +94,24 @@ public class OptionsPanel extends CustomPanel {
     }
 
     private void defaultButtonPressed() {
-        // Set all options to default
+        getMasterSlider().setValue(50);
+        getMusicSlider().setValue(50);
+        getSoundSlider().setValue(50);
+
+        applyButtonPressed();
     }
 
     private void applyButtonPressed() {
-        // Apply the changes
+        mainFrame.applySoundSettings();
+        mainFrame.applyResolutionSettings();
     }
 
     private void backButtonPressed() {
         mainFrame.switchToPanel(PanelType.MAIN_MENU);
+    }
+
+    private void continueButtonPressed() {
+        mainFrame.switchToPanel(PanelType.GAME);
     }
 
     private static Image getBackImage(){
@@ -82,4 +122,19 @@ public class OptionsPanel extends CustomPanel {
         }
         return null;
     }
+
+    public JSlider getMusicSlider() {
+        return optionsTabbedPane.getMusicSlider();
+    }
+
+    public JSlider getSoundSlider() {
+        return optionsTabbedPane.getSoundSlider();
+    }
+
+    public JSlider getMasterSlider() {
+        return optionsTabbedPane.getMasterSlider();
+    }
+
+
+
 }

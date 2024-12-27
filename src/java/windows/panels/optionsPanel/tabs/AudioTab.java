@@ -6,6 +6,9 @@ import java.awt.*;
 
 public class AudioTab extends CustomTab {
     CustomPanel panel;
+    SliderBox masterBox;
+    SliderBox musicBox;
+    SliderBox effectBox;
 
     public AudioTab(CustomPanel panel) {
         super(CustomTabType.DISPLAY);
@@ -22,10 +25,9 @@ public class AudioTab extends CustomTab {
         gbc.fill = GridBagConstraints.HORIZONTAL; // Stretch only horizontally
 
         // Create the SliderBox components
-        SliderBox masterBox = new SliderBox(new JSlider(), new JLabel("Master volume"));
-        SliderBox musicBox = new SliderBox(new JSlider(), new JLabel("Music volume"));
-        SliderBox effectBox = new SliderBox(new JSlider(), new JLabel("Effect volume"));
-
+        masterBox = new SliderBox(new JSlider(), new JLabel("Master volume"));
+        musicBox = new SliderBox(new JSlider(), new JLabel("Music volume"));
+        effectBox = new SliderBox(new JSlider(), new JLabel("Effect volume"));
 
         // Add components to the layout
         this.add(masterBox, gbc);
@@ -55,5 +57,22 @@ public class AudioTab extends CustomTab {
             this.slider = slider;
             this.add(slider);
         }
+
+        public JSlider getSlider() {
+            return slider;
+        }
     }
+
+    public JSlider getMasterSlider() {
+        return masterBox.getSlider();
+    }
+
+    public JSlider getMusicSlider() {
+        return musicBox.getSlider();
+    }
+
+    public JSlider getSoundSlider() {
+        return effectBox.getSlider();
+    }
+
 }

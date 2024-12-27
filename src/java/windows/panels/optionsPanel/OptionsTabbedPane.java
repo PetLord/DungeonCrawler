@@ -39,6 +39,26 @@ public class OptionsTabbedPane extends JTabbedPane {
         this.addTab("Display", displayTab);
     }
 
+    public JSlider getMusicSlider() {
+        return ((AudioTab) tabs.get(CustomTabType.AUDIO)).getMusicSlider();
+    }
+
+    public JSlider getSoundSlider() {
+        return ((AudioTab) tabs.get(CustomTabType.AUDIO)).getSoundSlider();
+    }
+
+    public JSlider getMasterSlider() {
+        return ((AudioTab) tabs.get(CustomTabType.AUDIO)).getMasterSlider();
+    }
+
+    public int getResolutionWidth() {
+        return ((DisplayTab) tabs.get(CustomTabType.DISPLAY)).getResolutionWidth();
+    }
+
+    public int getResolutionHeight() {
+        return ((DisplayTab) tabs.get(CustomTabType.DISPLAY)).getResolutionHeight();
+    }
+
     // Custom TabbedPaneUI class to customize tab headers
     private static class CustomTabbedPaneUI extends BasicTabbedPaneUI {
         private int tabMargin;
@@ -62,10 +82,20 @@ public class OptionsTabbedPane extends JTabbedPane {
         }
 
         @Override
+        protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
+            g.setFont(font);
+            g.setColor(Color.WHITE);
+            g.drawString(title, textRect.x, textRect.y + metrics.getAscent());
+        }
+
+        @Override
         protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
             for (int i = 0; i < rects.length; i++) {
                 if (i > 0) {
-                    rects[i].x += i * tabMargin; // Add margin between tabs
+                    rects[i].x = rects[i-1].x + rects[i-1].width + tabMargin; // Add margin between tabs
+                }
+                else{
+                    rects[i].x = tabMargin; // Set the first tab to the margin
                 }
             }
             super.paintTabArea(g, tabPlacement, selectedIndex);

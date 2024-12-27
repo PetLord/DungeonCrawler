@@ -11,7 +11,7 @@ public class GrabHand extends CustomCursor {
 
     public GrabHand() {
         super(CursorType.GRAB_HAND);
-        cursor = Toolkit.getDefaultToolkit().createCustomCursor(getImage(), new Point(0, 0), "grabHand");
+        cursor = Toolkit.getDefaultToolkit().createCustomCursor(getImage(), new Point(8, 4), "grabHand");
     }
 
     public void applyToComponent(Component component) {

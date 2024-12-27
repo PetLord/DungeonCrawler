@@ -1,6 +1,7 @@
 package windows.panels.gamePanel;
 
 import windows.panels.CustomPanel;
+import windows.panels.PanelType;
 import windows.panels.gamePanel.components.GraphicsComponent;
 import windows.panels.gamePanel.components.MovementComponent;
 import windows.panels.gamePanel.objects.Entity;
@@ -10,8 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends CustomPanel implements Runnable {
-    private final int originalWidth;
-    private final int originalHeight;
     private final int virtualWidth = 1200;  // 4:3 virtual width
     private final int virtualHeight = 900; // 4:3 virtual height
     private final double blackBoxScale = 0.1;
@@ -21,35 +20,43 @@ public class GamePanel extends CustomPanel implements Runnable {
     private int offsetY;
 
     private Thread gameThread;
-    private final GameWorld gameWorld;
+    private volatile boolean isPaused = false;
+    private GameWorld gameWorld;
 
     public GamePanel(MainFrame mainFrame) {
         super(mainFrame);
-        originalWidth = mainFrame.getWidth();
-        originalHeight = mainFrame.getHeight();
+        this.setBackground(Color.BLACK);
+        width = mainFrame.getWidth();
+        height = mainFrame.getHeight();
         this.actualWidth = mainFrame.getWidth();
         this.actualHeight = mainFrame.getHeight();
+        startGame();
 
         this.setPreferredSize(new Dimension(actualWidth, actualHeight));
         this.setFocusable(true);
-
         calculateLetterboxing();
-        gameWorld = new GameWorld(this, (int)(actualWidth * (1 - blackBoxScale)), (int) (actualHeight * 0.8));
-        //gameWorld = new GameWorld(this, (int)(actualWidth * (1 - blackBoxScale)), (int) (actualHeight * ( 1 - blackBoxScale)));
-        this.setBackground(Color.BLACK);
-        startGameThread();
     }
 
     @Override
-    public void onPanelActivation() {
-        SwingUtilities.invokeLater(this::requestFocusInWindow);
-        //requestFocusInWindow();
-        //requestFocus();
+    public void onPanelActivation(PanelType previousPanelType) {
+        switch (previousPanelType){
+            case MAIN_MENU:
+                startGame();
+                break;
+            case OPTIONS_MENU:
+                continueGameThread();
+                break;
+        }
+        SwingUtilities.invokeLater(this::requestFocusInWindow); // request focus after UI was built
     }
 
     @Override
-    public void onPanelDeactivation() {
-
+    public void onPanelDeactivation(PanelType newPanelType) {
+        if(newPanelType == PanelType.OPTIONS_MENU){
+            pauseGameThread();
+        } else {
+            exitGame();
+        }
     }
 
     private void calculateLetterboxing() {
@@ -80,11 +87,6 @@ public class GamePanel extends CustomPanel implements Runnable {
         actualHeight = letterboxedHeight;
     }
 
-    private void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
-
     @Override
     public void run() {
         final double maxUpdatesPerSecond = 60.0;
@@ -92,6 +94,15 @@ public class GamePanel extends CustomPanel implements Runnable {
         long lastUpdateTime = System.nanoTime();
 
         while (gameThread != null) {
+            if (isPaused) {
+                try {
+                    Thread.sleep(100); // Sleep briefly while paused
+                    continue; // Skip the rest of the loop
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
             long currentTime = System.nanoTime();
             double elapsedTime = currentTime - lastUpdateTime;
 
@@ -112,7 +123,6 @@ public class GamePanel extends CustomPanel implements Runnable {
             }
         }
     }
-
 
     private void update() {
         if(gameWorld.getCurrentRoom().getEntities() == null){
@@ -149,14 +159,6 @@ public class GamePanel extends CustomPanel implements Runnable {
         }
     }
 
-    public int getOriginalWidth() {
-        return originalWidth;
-    }
-
-    public int getOriginalHeight() {
-        return originalHeight;
-    }
-
     public int getVirtualWidth() {
         return virtualWidth;
     }
@@ -184,4 +186,46 @@ public class GamePanel extends CustomPanel implements Runnable {
     public GameWorld getGameWorld() {
         return gameWorld;
     }
+
+    @Override
+    public void setDimensions(int width, int height) {
+        this.width = width;
+        this.height = height;
+        calculateLetterboxing();
+        gameWorld.setDimensions((int)(actualWidth * (1 - blackBoxScale)), (int) (actualHeight * 0.8));
+    }
+
+    public void onEscapePressed(){
+        mainFrame.switchToPanel(PanelType.OPTIONS_MENU);
+    }
+
+    private void startGameThread() {
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+
+    private void stopGameThread(){
+        gameThread = null;
+    }
+
+    private void pauseGameThread(){
+        isPaused = true;
+    }
+
+    private void continueGameThread(){
+        isPaused = false;
+    }
+
+    public void startGame(){
+        if(gameWorld == null){
+            gameWorld = new GameWorld(this, (int)(actualWidth * (1 - blackBoxScale)), (int) (actualHeight * 0.8));
+            startGameThread();
+        }
+    }
+
+    public void exitGame(){
+        stopGameThread();
+        gameWorld = null;
+    }
+
 }

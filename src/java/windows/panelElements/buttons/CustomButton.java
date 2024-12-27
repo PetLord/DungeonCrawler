@@ -14,6 +14,7 @@ public class CustomButton extends Button {
 
     public CustomButton(String text, CustomPanel panel) {
         super(text);
+        this.panel = panel;
 
         // Default appearance
         defaultBackground = new Color(153, 98, 76); // Default background color

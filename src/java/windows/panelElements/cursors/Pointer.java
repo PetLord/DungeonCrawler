@@ -11,7 +11,7 @@ public class Pointer extends CustomCursor {
 
     public Pointer() {
         super(CursorType.POINTER);
-        cursor = Toolkit.getDefaultToolkit().createCustomCursor(getImage(), new Point(0, 0), "pointer");
+        cursor = Toolkit.getDefaultToolkit().createCustomCursor(getImage(), new Point(8, 4), "pointer");
     }
 
     public void applyToComponent(Component component) {

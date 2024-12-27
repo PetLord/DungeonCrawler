@@ -12,8 +12,8 @@ public class Room {
     private final ArrayList<RoomObject> objects;
     private final ArrayList<StartPoint> startPoints;
     private ArrayList<Entity> entities;
-    private final int tileHeight;
-    private final int tileWidth;
+    private int tileHeight;
+    private int tileWidth;
 
     public Room(int numRows, int numCols, int tileWidth, int tileHeight) {
         this.numRows = numRows;
@@ -133,4 +133,12 @@ public class Room {
     public ArrayList<StartPoint> getStartPoints() {
         return startPoints;
     }
+
+   public void setWidth(int width){
+        this.tileWidth = width / numCols;
+    }
+
+    public void setHeight(int height){
+        this.tileHeight = height / numRows;
+   }
 }

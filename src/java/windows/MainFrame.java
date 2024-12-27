@@ -1,5 +1,7 @@
 package windows;
 
+import audio.Sound;
+import audio.SoundPlayer;
 import windows.panelElements.cursors.*;
 import windows.panels.CustomPanel;
 import windows.panels.PanelType;
@@ -9,6 +11,7 @@ import windows.panels.optionsPanel.OptionsPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,32 +19,61 @@ public class MainFrame extends JFrame {
     private final CardLayout cardLayout;
     private Map<CursorType, CustomCursor> cursors;
     private Map<PanelType, CustomPanel> panels;
+    private SoundPlayer soundPlayer;
     private int height;
     private int width;
     private PanelType currentPanel; // Tracks the active panel
+    private GraphicsDevice gd;
 
     public MainFrame() {
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setUndecorated(false);
         this.setTitle("Dungeon Crawler");
-        this.height = Toolkit.getDefaultToolkit().getScreenSize().height;
-        this.width = Toolkit.getDefaultToolkit().getScreenSize().width;
+        //this.height = Toolkit.getDefaultToolkit().getScreenSize().height;
+        //this.width = Toolkit.getDefaultToolkit().getScreenSize().width;
+
+        this.height = 768;
+        this.width = 1024;
+        this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - width / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - height / 2);
         this.setSize(width, height);
         this.cardLayout = new CardLayout();
         this.setLayout(cardLayout);
         this.setBackground(Color.BLACK);
 
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        gd = ge.getDefaultScreenDevice();
+
+        this.handleClosing();
         this.createCursors();
         this.createPanels();
+        this.createSoundPlayer();
 
-        this.pack();
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+        //this.pack();
         this.setVisible(true);
 
         // Start with the main menu
         switchToPanel(PanelType.MAIN_MENU);
+    }
+
+    private void handleClosing(){
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                closeOperation();
+            }
+        });
+    }
+
+    private void closeOperation(){
+        soundPlayer.unloadAllSounds();
+        System.exit(0);
+    }
+
+    private void createSoundPlayer(){
+        JSlider musicSlider = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getMusicSlider();
+        JSlider soundSlider = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getSoundSlider();
+        JSlider masterSlider = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getMasterSlider();
+        soundPlayer = new SoundPlayer(musicSlider, soundSlider, masterSlider);
     }
 
     private void createPanels() {
@@ -49,7 +81,6 @@ public class MainFrame extends JFrame {
         MenuPanel menuPanel = new MenuPanel(this);
         GamePanel gamepanel = new GamePanel(this);
         OptionsPanel optionsPanel = new OptionsPanel(this);
-        currentPanel = PanelType.MAIN_MENU;
 
         panels.put(PanelType.GAME, gamepanel);
         panels.put(PanelType.MAIN_MENU, menuPanel);
@@ -63,8 +94,11 @@ public class MainFrame extends JFrame {
         if (panelType == currentPanel) {
             return; // Prevent redundant switching
         }
-        panels.get(currentPanel).onPanelDeactivation();
-        panels.get(panelType).onPanelActivation();
+        if(panels.get(currentPanel) != null){
+            panels.get(currentPanel).onPanelDeactivation(panelType);
+        }
+
+        panels.get(panelType).onPanelActivation(currentPanel);
 
         cardLayout.show(this.getContentPane(), panelType.toString());
         currentPanel = panelType; // Update current panel
@@ -79,5 +113,53 @@ public class MainFrame extends JFrame {
 
     public CustomCursor getCursor(CursorType cursorType) {
         return cursors.get(cursorType);
+    }
+
+    public void applySoundSettings(){
+        soundPlayer.updateVolumes();
+    }
+
+    public void applyResolutionSettings(){
+        this.width = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getResolutionWidth();
+        this.height = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getResolutionHeight();
+        this.setSize(width, height);
+        this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - width / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - height / 2);
+        notifyPanels();
+    }
+
+    public void playSound(Sound sound){
+        soundPlayer.playSound(sound);
+    }
+
+    public void stopSound(Sound sound){
+        soundPlayer.stopSound(sound.getSoundType());
+    }
+
+    public void toggleFullScreen() {
+        this.dispose();
+        if (this.getExtendedState() == JFrame.MAXIMIZED_BOTH || gd.getFullScreenWindow() != null) {
+            this.setExtendedState(JFrame.NORMAL);
+            this.setUndecorated(false);
+            this.applyResolutionSettings();
+            gd.setFullScreenWindow(null); // Exit fullscreen mode
+        } else {
+            // Switch to fullscreen mode
+            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+            this.setUndecorated(true);
+            gd.setFullScreenWindow(this); // Enter fullscreen mode
+            notifyPanels();
+        }
+        this.setVisible(true);
+    }
+
+    private void notifyPanels(){
+        for(CustomPanel panel : panels.values()){
+            panel.setDimensions(width, height);
+        }
+    }
+
+    public GamePanel getGamePanel(){
+        return (GamePanel)panels.get(PanelType.GAME);
     }
 }
