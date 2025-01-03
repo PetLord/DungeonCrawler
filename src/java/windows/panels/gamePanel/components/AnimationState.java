@@ -12,6 +12,6 @@ public enum AnimationState {
     RUNNING_LEFT,
     RUNNING_UP,
     RUNNING_RIGHT,
-    RUNNING_DOWN
-
+    RUNNING_DOWN,
+    DEAD,
 }

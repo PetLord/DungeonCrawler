@@ -1,21 +1,34 @@
 package windows.panels.gamePanel.components;
 
-import windows.panels.gamePanel.objects.Entity;
+import windows.panels.gamePanel.entities.characters.Character;
 
 // if an entity has a DamageComponent, it can take damage from other entities
 public class DamageComponent {
-    private final Entity entity;
+    private final Character character;
 
-    public DamageComponent(Entity entity) {
-        this.entity = entity;
+    public DamageComponent(Character character) {
+        this.character = character;
     }
 
     public void takeDamage(int damage) {
-        //entity.setHealth(entity.getHealth() - calculateDamage(damage));
+        int newHealth = character.getCurrentHealth() - calculateDamage(damage);
+
+        if (newHealth <= 0) {
+            character.die();
+            newHealth = 0;
+        }
+        character.setCurrentHealth(newHealth);
+        System.out.println(character.getName() + ":" + character.getStats().getMaxHealth() + "/" + character.getCurrentHealth());
     }
 
-    public int calculateDamage(){
-        // calculate damage based on entity's windows.panels.gamePanel.stats
-        return 0;
+
+    public int calculateDamage(int damage) {
+        // 5 armor means -5% damage taken
+        int totalArmor = character.getStats().getArmor();
+
+        if(character.getStats().getArmor() > 0){
+            damage = (int) Math.max(1, damage * ( 1 - character.getStats().getArmor()/100f));
+        }
+        return damage;
     }
 }

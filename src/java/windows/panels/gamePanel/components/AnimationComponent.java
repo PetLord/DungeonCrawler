@@ -1,6 +1,6 @@
 package windows.panels.gamePanel.components;
 
-import windows.panels.gamePanel.objects.characters.Character;
+import windows.panels.gamePanel.entities.characters.Character;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AnimationComponent {
-    private final Character character;
+    private Character character;
     private AnimationState currentState;
     private final Map<AnimationState, ArrayList<Image>> animationFrames = new HashMap<>();
     private final Map<AnimationState, Integer> animationSpeed = new HashMap<>();
@@ -28,6 +28,7 @@ public class AnimationComponent {
 
     public void update() {
         if (currentFrames == null || currentFrames.isEmpty()) {
+            System.out.println("No frames to animate");
             return; // Guard against uninitialized or empty frames
         }
 
@@ -37,12 +38,23 @@ public class AnimationComponent {
         }
 
         if (System.currentTimeMillis() - lastFrameTime >= animSpeed) {
+            if(currentState == AnimationState.DEAD && currentFrame == currentFrames.size() - 1){
+                character.onDeathAnimationEnd();
+                return;
+            }
+
             currentFrame = (currentFrame + 1) % currentFrames.size(); // Loop through frames
             lastFrameTime = System.currentTimeMillis();
         }
     }
 
+
+
     public void setAnimationState(AnimationState state) {
+        if(currentState == AnimationState.DEAD){
+            return;
+        }
+
         if (currentState != state && animationFrames.containsKey(state)) {
             currentState = state;
             currentFrames = animationFrames.get(state);

@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 public class MenuPanel extends CustomPanel {
     private final GridBagLayout gb;
@@ -21,14 +20,10 @@ public class MenuPanel extends CustomPanel {
     private final Image backImage;
     private Sound currentSound;
 
-
     public MenuPanel(MainFrame mainFrame) {
         super(mainFrame);
         gb = new GridBagLayout();
         gbc = new GridBagConstraints();
-        width = mainFrame.getWidth();
-        height = mainFrame.getHeight();
-        setPreferredSize(new Dimension(width, height));
         backImage = getBackImage();
 
         handleLayout();
@@ -69,16 +64,9 @@ public class MenuPanel extends CustomPanel {
     }
 
     private void playMenuSound(){
-        Random rand = new Random();
-        currentSound = switch(rand.nextInt(4)) {
-            default -> SoundFactory.getMenuSound1();
-            case 1 -> SoundFactory.getMenuSound2();
-            case 2 -> SoundFactory.getMenuSound3();
-            case 3 -> SoundFactory.getMenuSound4();
-        };
+        currentSound = SoundFactory.getRandomMenuMusic();
         mainFrame.playSound(currentSound);
     }
-
 
     private static Image getBackImage(){
         try {

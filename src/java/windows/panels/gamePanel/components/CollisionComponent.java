@@ -1,23 +1,25 @@
 package windows.panels.gamePanel.components;
 
-import windows.panels.gamePanel.GameWorld;
-import windows.panels.gamePanel.objects.Entity;
-import windows.panels.gamePanel.objects.structures.Tile;
+import windows.panels.gamePanel.entities.Entity;
+import windows.panels.gamePanel.entities.characters.Character;
+import windows.panels.gamePanel.entities.structures.Room;
+import windows.panels.gamePanel.entities.structures.Tile;
 
 import java.awt.Rectangle;
 import java.util.PriorityQueue;
 
 public class CollisionComponent {
-    private final GameWorld gameWorld;
+    private final Character character;
 
-    public CollisionComponent(GameWorld gameWorld) {
-        this.gameWorld = gameWorld;
+    public CollisionComponent(Character character) {
+        this.character = character;
     }
 
     public boolean checkCollision(Rectangle hitBox) {
-        int tileWidth = gameWorld.getCurrentRoom().getTileWidth();
-        int tileHeight = gameWorld.getCurrentRoom().getTileHeight();
-        PriorityQueue<Tile>[][] tileGrid = gameWorld.getCurrentRoom().getTileGrid();
+        Room currentRoom = character.getMyRoom();
+        int tileWidth = currentRoom.getTileWidth();
+        int tileHeight = currentRoom.getTileHeight();
+        PriorityQueue<Tile>[][] tileGrid = currentRoom.getTileGrid();
 
         // Calculate the range of tiles the hitBox overlaps
         int minRow = Math.max(0, hitBox.y / tileHeight);
@@ -43,8 +45,9 @@ public class CollisionComponent {
 
     public void resolveCollision(Entity entity, int dx, int dy) {
         Rectangle hitBox = entity.getHitBox();
-        int tileWidth = gameWorld.getCurrentRoom().getTileWidth();
-        int tileHeight = gameWorld.getCurrentRoom().getTileHeight();
+        Room currentRoom = character.getMyRoom();
+        int tileWidth = currentRoom.getTileWidth();
+        int tileHeight = currentRoom.getTileHeight();
 
         // Handle horizontal movement
         hitBox.x += dx;

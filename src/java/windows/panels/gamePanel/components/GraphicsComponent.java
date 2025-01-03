@@ -4,7 +4,7 @@ import java.awt.*;
 
 import windows.panels.gamePanel.animations.SwordAnimation;
 import windows.panels.gamePanel.GameWorld;
-import windows.panels.gamePanel.objects.Entity;
+import windows.panels.gamePanel.entities.Entity;
 
 public class GraphicsComponent {
     private Image image;

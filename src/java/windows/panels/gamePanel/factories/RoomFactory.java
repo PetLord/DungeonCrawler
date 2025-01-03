@@ -1,8 +1,9 @@
 package windows.panels.gamePanel.factories;
 import windows.panels.gamePanel.GameWorld;
-import windows.panels.gamePanel.objects.structures.Floor;
-import windows.panels.gamePanel.objects.structures.Room;
-import windows.panels.gamePanel.objects.structures.WallDirection;
+import windows.panels.gamePanel.entities.structures.Floor;
+import windows.panels.gamePanel.entities.structures.MobSpawnLocation;
+import windows.panels.gamePanel.entities.structures.Room;
+import windows.panels.gamePanel.entities.structures.WallDirection;
 
 public abstract class RoomFactory {
 
@@ -19,7 +20,8 @@ public abstract class RoomFactory {
         defaultRoom.addObject(WallFactory.getWall(defaultFloor, WallDirection.EAST));
         defaultRoom.addObject(WallFactory.getWall(defaultFloor, WallDirection.WEST));
 
-        defaultRoom.addObject(StartPointFactory.getDefaultStartPoint(numRows/2, numCols/2, tileWidth, tileHeight));
+        defaultRoom.addPlayerEntrance(StartPointFactory.getDefaultStartPoint(numRows/2, numCols/2, tileWidth, tileHeight));
+        defaultRoom.addMobSpawnLocation(new MobSpawnLocation(defaultRoom,numRows/3, numCols/3));
 
         return defaultRoom;
     }

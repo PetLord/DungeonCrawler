@@ -4,7 +4,7 @@ import windows.panels.gamePanel.GamePanel;
 
 import windows.panels.gamePanel.inputHandling.PlayerKeyboardListener;
 import windows.panels.gamePanel.inputHandling.PlayerMouseListener;
-import windows.panels.gamePanel.objects.characters.Player;
+import windows.panels.gamePanel.entities.characters.Player;
 
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;

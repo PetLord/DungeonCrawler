@@ -1,27 +1,34 @@
 To-do:
 
-Fix Room not fitting inside gamepanel if not n*n -> done
-Collision 10 tegyuk fel hogy done
-Animation 9 nagyjabol done, needs more keyframes
-Weapons 6
- -- weapon holding: When facing up render weapons first, then player done
- -- different offset when facing left or right done
- -- fix weapon range ~
-Menu 5
-Enemies 6
-Add more rooms 3
-Random floor generation 10
-Scalable character 2
-Skill tree? 9
+Animation               -- need more keyframes
+Weapons                 -- need more weapons
+fix weapon range        -- needs testing
+Add more sounds         -- to do
+Enemies                 -- to do
+    Slime AI            -- done
+Solve attacking         -- to do
+Healthbar               -- to do
+Add more rooms          -- to do
+Random floor generation -- to do
+Scalable character      -- to do
+Skill tree?             -- to do
 
 Projekt szuksegletek:
 
-Szálak (vagy Timer): game thread es SoundPlayer
-Váltható nézetek, vagy több ablak: panels
-Grafika: gameworld, player, enemies, weapons, menu
-Szöveges fájlok kezelése: nincs
-Hangok használata: Sounds class
-Stream-ek használata: SoundPlayer
-Komplexitás: minimum 8 darab lényeges osztály: ..
+Szálak (vagy Timer)                 -- game thread es SoundPlayer
+Váltható nézetek, vagy több ablak   -- panels
+Grafika                             -- Game world, player, enemies, weapons, menu etc..
+Szöveges fájlok kezelése            -- Settings Manager
+Hangok használata                   -- Sounds class
+Stream-ek használata                -- SoundPlayer, RoomObject get tiles, SlimeAI, Room.getAliveCharacters
+Komplexitas                         -- done
 
-!! known bug: if you rescale while playing, the player will be misplaced
+hálózati elemek használata: például kliens-szerver, multiplayer                     -- nincs
+bonyolultabb grafika: például 3D/háttér videó/pixel art, saját betűtípus/színek stb -- sajat kurzor, background, player
+tervezési minták implementálása                                                     -- Strategy (AI), Singleton (SettingsManager), Observer (SoundPlayer, Mainframe?)
+
+!! known bug: if you rescale while playing, the player will be misplaced a bit
+!! damage sound
+!! add equipment to dmg calc
+
+

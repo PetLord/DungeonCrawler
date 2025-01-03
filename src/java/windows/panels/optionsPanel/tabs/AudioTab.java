@@ -1,5 +1,6 @@
 package windows.panels.optionsPanel.tabs;
 
+import settings.SettingsManager;
 import windows.panels.CustomPanel;
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +38,20 @@ public class AudioTab extends CustomTab {
 
         gbc.gridy = 2; // Move to the next row
         this.add(effectBox, gbc);
+    }
+
+    public void saveSettings() {
+        SettingsManager settingsManager = SettingsManager.getInstance();
+        settingsManager.saveMasterVolume(masterBox.getSlider().getValue());
+        settingsManager.saveMusicVolume(musicBox.getSlider().getValue());
+        settingsManager.saveEffectVolume(effectBox.getSlider().getValue());
+    }
+
+    public void loadSettings() {
+        SettingsManager settingsManager = SettingsManager.getInstance();
+        masterBox.getSlider().setValue(settingsManager.getSavedMasterVolume());
+        musicBox.getSlider().setValue(settingsManager.getSavedMusicVolume());
+        effectBox.getSlider().setValue(settingsManager.getSavedEffectVolume());
     }
 
     public static class SliderBox extends JPanel {

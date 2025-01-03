@@ -1,30 +1,30 @@
 package windows.panels.gamePanel.equipment.weapons;
 
 import windows.panels.gamePanel.animations.WeaponAnimation;
-import windows.panels.gamePanel.components.Direction;
-import windows.panels.gamePanel.objects.Entity;
-import windows.panels.gamePanel.objects.characters.Player;
+import windows.panels.gamePanel.components.FaceDirection;
+import windows.panels.gamePanel.entities.characters.Player;
 import windows.panels.gamePanel.stats.WeaponStat;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public abstract class Weapon {
-    private int width;
-    private int height;
-    private WeaponAnimation animationComponent;
+    private final int width;
+    private final int height;
+    private WeaponAnimation weaponAnimation;
     private final WeaponStat weaponStat;
     private WeaponState state; // idle or attacking
-    private Direction direction;
+    private FaceDirection direction;
     protected Player owner; // The entity wielding this weapon
     private boolean isVisible;
     private long lastAttackTime; // Time tracking for cooldown
     protected abstract void performAttack(); // Each weapon type implements this
-    public abstract Point getGripPoint(Direction direction); // Each weapon type implements this
+    public abstract Point getGripPoint(FaceDirection direction); // Each weapon type implements this
 
     public Weapon(WeaponStat weaponStat, Player owner, int width, int height) {
         this.weaponStat = weaponStat;
         this.state = WeaponState.IDLE;
-        this.direction = Direction.EAST;
+        this.direction = FaceDirection.EAST;
         this.owner = owner;
         this.isVisible = true;
         this.lastAttackTime = System.currentTimeMillis();
@@ -37,7 +37,7 @@ public abstract class Weapon {
         int cooldown = 1000 / (int)(weaponStat.getAttackSpeed()); // Attack speed as cooldown in milliseconds
 
         if (currentTime - lastAttackTime < cooldown) {
-            System.out.println("Weapon is on cooldown. Remaining cooldown: " + (cooldown - (currentTime - lastAttackTime)) + " ms");
+            //System.out.println("Weapon is on cooldown. Remaining cooldown: " + (cooldown - (currentTime - lastAttackTime)) + " ms");
             return;
         }
             // Enough time has passed since the last attack
@@ -60,24 +60,16 @@ public abstract class Weapon {
         }).start();
     }
 
-    public WeaponAnimation getAnimationComponent() {
-        return animationComponent;
+    public WeaponAnimation getWeaponAnimation() {
+        return weaponAnimation;
     }
 
-    public Direction getDirection() {
+    public FaceDirection getDirection() {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
+    public void setDirection(FaceDirection direction) {
         this.direction = direction;
-    }
-
-    public boolean isVisible() {
-        return isVisible;
-    }
-
-    public Entity getOwner() {
-        return owner;
     }
 
     public WeaponStat getWeaponStat() {
@@ -92,22 +84,10 @@ public abstract class Weapon {
         this.state = state;
     }
 
-    public void setWeaponState(WeaponState state) {
-        this.state = state;
-    }
-
     public void render(Graphics2D g) {
         if (isVisible) {
-            animationComponent.render(g, owner);
+            weaponAnimation.render(g, owner);
         }
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
-
-    public void setVisible(boolean isVisible) {
-        this.isVisible = isVisible;
     }
 
     public long getLastAttackTime() {
@@ -118,8 +98,8 @@ public abstract class Weapon {
         return (long)(1000 / weaponStat.getAttackSpeed());
     }
 
-    public void setAnimationComponent(WeaponAnimation animationComponent) {
-        this.animationComponent = animationComponent;
+    public void setWeaponAnimation(WeaponAnimation weaponAnimation) {
+        this.weaponAnimation = weaponAnimation;
     }
 
     public boolean canAttack() {
@@ -132,5 +112,30 @@ public abstract class Weapon {
 
     public int getHeight() {
         return height;
+    }
+
+    public Point getSwordLocation() {
+        if (owner == null || owner.getGameWorld() == null) {
+            return new Point(0, 0); // Fallback to a default location or handle gracefully
+        }
+        Point2D handPosition = owner.getHandPosition(this.getDirection());
+        double wScale = owner.getGameWorld().getCurrentWidthScale();
+        double hScale = owner.getGameWorld().getCurrentHeightScale();
+        Point gripPoint = getGripPoint(this.getDirection());
+
+        // Calculate the pixel position of the hand
+        int handX = (int) (owner.getX() + handPosition.getX() * owner.getWidth() * wScale);
+        int handY = (int) (owner.getY() + handPosition.getY() * owner.getHeight() * hScale);
+
+        int swordX = handX - (int) (gripPoint.x * wScale);
+        int swordY = handY - (int) (gripPoint.y * hScale);
+        return new Point(swordX, swordY);
+    }
+
+    public Rectangle getHitBox() {
+        Point swordLocation = getSwordLocation();
+        double wScale = owner.getGameWorld().getCurrentWidthScale();
+        double hScale = owner.getGameWorld().getCurrentHeightScale();
+        return new Rectangle(swordLocation.x, swordLocation.y, (int) (width * wScale), (int) (height * hScale));
     }
 }

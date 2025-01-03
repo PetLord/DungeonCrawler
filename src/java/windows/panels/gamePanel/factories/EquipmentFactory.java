@@ -3,7 +3,7 @@ package windows.panels.gamePanel.factories;
 import windows.panels.gamePanel.equipment.weapons.swords.Stick;
 import windows.panels.gamePanel.equipment.weapons.swords.Sword;
 import windows.panels.gamePanel.GameWorld;
-import windows.panels.gamePanel.objects.characters.Player;
+import windows.panels.gamePanel.entities.characters.Player;
 
 public abstract class EquipmentFactory {
 

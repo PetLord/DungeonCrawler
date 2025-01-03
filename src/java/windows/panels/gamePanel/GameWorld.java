@@ -1,20 +1,20 @@
 package windows.panels.gamePanel;
 
-import windows.panels.gamePanel.characterProfessions.CharacterProfession;
-import windows.panels.gamePanel.characterProfessions.playableCharacters.Fighter;
 import windows.panels.gamePanel.components.GraphicsComponent;
-import windows.panels.gamePanel.components.MovementComponent;
+import windows.panels.gamePanel.entities.Entity;
+import windows.panels.gamePanel.entities.characters.Character;
+import windows.panels.gamePanel.entities.characters.enemies.Slime;
+import windows.panels.gamePanel.entities.structures.MobSpawnLocation;
+import windows.panels.gamePanel.factories.EnemyFactory;
 import windows.panels.gamePanel.factories.PlayerFactory;
 import windows.panels.gamePanel.factories.RoomFactory;
-import windows.panels.gamePanel.factories.StatFactory;
-import windows.panels.gamePanel.objects.Entity;
-import windows.panels.gamePanel.objects.characters.Player;
-import windows.panels.gamePanel.objects.structures.Room;
-import windows.panels.gamePanel.objects.structures.Tile;
-import windows.panels.gamePanel.stats.CharacterStat;
+import windows.panels.gamePanel.entities.characters.Player;
+import windows.panels.gamePanel.entities.structures.Room;
+import windows.panels.gamePanel.entities.structures.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class GameWorld {
     private int worldHeight;
@@ -34,39 +34,35 @@ public class GameWorld {
         rooms.add(starterRoom);
         currentRoom = starterRoom;
 
-        CharacterStat baseStats = StatFactory.getDefaultCharacterStat();
-        CharacterProfession f = new Fighter(baseStats);
-        player = PlayerFactory.createDefaultPlayer(f, gamePanel, this);
-        currentRoom.addEntity(player);
+        player = PlayerFactory.createDefaultPlayer(gamePanel, this, starterRoom);
+        Slime slime = EnemyFactory.createSlime(gamePanel, this, currentRoom, currentRoom.getMobSpawnLocations().getFirst());
+
+        currentRoom.addCharacter(slime);
+        currentRoom.addCharacter(player);
 
         gamepanel.startGameThread();
     }
 
     public void render(Graphics2D g2){
+        if(getCurrentRoom() == null){
+            return;
+        }
         getCurrentRoom().render(g2);
 
-        for (Entity entity : getCurrentRoom().getEntities()) {
-            if (entity.hasComponent(GraphicsComponent.class)) {
-                entity.render(g2);
+        ArrayList<Character> characters = new ArrayList<>(getCurrentRoom().getAllCharacters());
+        characters.sort(Comparator.comparingInt(Entity::getY));
+
+        for (Character character :characters) {
+            if (character.hasComponent(GraphicsComponent.class)) {
+                character.render(g2);
             }
         }
     }
 
-    public int getWorldHeight() {
-        return worldHeight;
-    }
-
-    public int getWorldWidth() {
-        return worldWidth;
-    }
-
     public void setCurrentRoom(Room room) {
         currentRoom = room;
-        player.moveTo(currentRoom.getStartPoints().getFirst());
+        player.moveTo(currentRoom.getPlayerEntrances().getFirst());
 
-        if(player.hasComponent(MovementComponent.class)){
-            player.getComponent(MovementComponent.class).setTileSizeMultiplier(currentRoom.getTileWidth(), currentRoom.getTileHeight());
-        }
     }
 
     public void addRoom(Room room) {
@@ -102,5 +98,9 @@ public class GameWorld {
         worldHeight = height;
         currentRoom.setWidth(width);
         currentRoom.setHeight(height);
+    }
+
+    public ArrayList<MobSpawnLocation> getMobSpawnLocation(){
+        return currentRoom.getMobSpawnLocations();
     }
 }

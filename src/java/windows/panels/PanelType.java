@@ -3,7 +3,8 @@ package windows.panels;
 public enum PanelType {
     MAIN_MENU,
     OPTIONS_MENU,
-    GAME;
+    GAME,
+    GAME_OVER;
 
     @Override
     public String toString() {

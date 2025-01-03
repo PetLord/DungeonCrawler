@@ -29,14 +29,19 @@ public class SoundPlayer {
         if(sound == null) {
             return;
         }
-
         if(soundCache.containsKey(sound.getSoundType())) {
             soundCache.get(sound.getSoundType()).stop();
             soundCache.remove(sound.getSoundType());
         }
-
         soundCache.put(sound.getSoundType(), sound);
         new Thread(sound::play).start();
+    }
+
+    public void playSound(SoundType soundType){
+        Sound sound = soundCache.get(soundType);
+        if(sound != null){;
+            sound.play();
+        }
     }
 
     // Stops a currently playing sound
@@ -45,6 +50,10 @@ public class SoundPlayer {
         if (sound != null) {
             sound.stop();
         }
+    }
+
+    public void loadSound(Sound sound){
+        soundCache.put(sound.getSoundType(), sound);
     }
 
     // Optionally unload a sound if it's no longer needed

@@ -19,14 +19,11 @@ public class OptionsPanel extends CustomPanel {
     public OptionsPanel(MainFrame mainFrame) {
         super(mainFrame);
         this.setLayout(new BorderLayout());
-        width = mainFrame.getWidth();
-        height = mainFrame.getHeight();
         backImage = getBackImage();
         optionsTabbedPane = new OptionsTabbedPane(this);
         this.add(optionsTabbedPane, BorderLayout.CENTER);
 
         buttonPanel = new ButtonPanel(this);
-
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
@@ -56,6 +53,18 @@ public class OptionsPanel extends CustomPanel {
 
     public int getResolutionHeight() {
         return optionsTabbedPane.getResolutionHeight();
+    }
+
+    public OptionsTabbedPane getOptionsTabbedPane() {
+        return optionsTabbedPane;
+    }
+
+    public void saveSettings() {
+        optionsTabbedPane.saveSettings();
+    }
+
+    public void loadSettings() {
+        optionsTabbedPane.loadSettings();
     }
 
     public class ButtonPanel extends JPanel{

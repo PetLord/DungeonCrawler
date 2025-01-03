@@ -1,8 +1,8 @@
 package windows.panels.gamePanel.factories;
 
-import windows.panels.gamePanel.objects.structures.Floor;
-import windows.panels.gamePanel.objects.structures.Wall;
-import windows.panels.gamePanel.objects.structures.WallDirection;
+import windows.panels.gamePanel.entities.structures.Floor;
+import windows.panels.gamePanel.entities.structures.Wall;
+import windows.panels.gamePanel.entities.structures.WallDirection;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

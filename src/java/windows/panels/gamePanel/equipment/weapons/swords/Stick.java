@@ -1,9 +1,9 @@
 package windows.panels.gamePanel.equipment.weapons.swords;
 
-import windows.panels.gamePanel.components.Direction;
+import windows.panels.gamePanel.components.FaceDirection;
 import windows.panels.gamePanel.equipment.weapons.WeaponState;
 import windows.panels.gamePanel.GameWorld;
-import windows.panels.gamePanel.objects.characters.Player;
+import windows.panels.gamePanel.entities.characters.Player;
 import windows.panels.gamePanel.stats.WeaponStat;
 
 import javax.imageio.ImageIO;
@@ -15,11 +15,11 @@ import java.io.File;
 public class Stick extends Sword{
 
     public Stick(WeaponStat weaponStat, Player player, GameWorld gameWorld) {
-        super(weaponStat, player, 48, 48, gameWorld);
+        super(weaponStat, player, 64, 64, gameWorld);
     }
 
     @Override
-    public Point getGripPoint(Direction direction) {
+    public Point getGripPoint(FaceDirection direction) {
         return switch (direction)
             {
                 case SOUTH -> new Point(getWidth() * 3/32, getHeight() * 5 / 32);
@@ -41,8 +41,8 @@ public class Stick extends Sword{
             //BufferedImage scaledImg1 = ImageUtils.rescaleImage(img1, 1.5);
             //BufferedImage scaledImg2 = ImageUtils.rescaleImage(img2, 1.5);
 
-            this.getAnimationComponent().addAnimationFrames(WeaponState.ATTACKING, new ImageIcon(img1).getImage());
-            this.getAnimationComponent().addAnimationFrames(WeaponState.IDLE, new ImageIcon(img2).getImage());
+            this.getWeaponAnimation().addAnimationFrames(WeaponState.ATTACKING, new ImageIcon(img1).getImage());
+            this.getWeaponAnimation().addAnimationFrames(WeaponState.IDLE, new ImageIcon(img2).getImage());
         } catch (Exception e) {
             System.out.println("Error loading default stick image");
         }

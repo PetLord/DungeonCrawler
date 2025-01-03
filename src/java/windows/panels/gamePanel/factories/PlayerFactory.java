@@ -1,13 +1,14 @@
 package windows.panels.gamePanel.factories;
 
-import windows.panels.gamePanel.characterProfessions.CharacterProfession;
 import windows.panels.gamePanel.components.*;
+import windows.panels.gamePanel.entities.structures.Room;
 import windows.panels.gamePanel.equipment.EquipmentType;
 import windows.panels.gamePanel.equipment.weapons.swords.Sword;
 import windows.panels.gamePanel.GamePanel;
 import windows.panels.gamePanel.GameWorld;
-import windows.panels.gamePanel.objects.characters.Player;
+import windows.panels.gamePanel.entities.characters.Player;
 import windows.panels.gamePanel.animations.PlayerAnimations;
+import windows.panels.gamePanel.stats.CharacterStat;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -19,25 +20,26 @@ public abstract class PlayerFactory {
     static final double runAnimationSpeed = 6;
     static final double idleAnimationSpeed = 1.5;
     static final double walkAnimationSpeed = 3;
+    static final double deathAnimationSpeed = 5;
 
-    public static Player createDefaultPlayer(CharacterProfession profession, GamePanel gamePanel, GameWorld gameWorld) {
+    public static Player createDefaultPlayer(GamePanel gamePanel, GameWorld gameWorld, Room myRoom) {
         String defaultName = "Player1";
         Image defaultImage = loadDefaultPlayerImage();
-
-        Player tempPlayer = new Player(defaultName, profession, gamePanel);
+        CharacterStat defaultStat = StatFactory.getDefaultCharacterStat();
+        Player tempPlayer = new Player(defaultName, defaultStat, gamePanel, myRoom);
         //loadDefaultPlayerAnimationFrames(tempPlayer);
 
         int tileWidth = gameWorld.getCurrentRoom().getTileWidth();
         int tileHeight = gameWorld.getCurrentRoom().getTileHeight();
 
-        tempPlayer.moveTo(gameWorld.getCurrentRoom().getStartPoints().getFirst());
-        //tempPlayer.setHeight((int)(tileHeight* 1.5));
-        //tempPlayer.setWidth(tileWidth);
-        tempPlayer.addComponent(MovementComponent.class, new MovementComponent(tempPlayer.getCharacterProfession().getStats().getMovementSpeed(), tileWidth, tileHeight));
+        tempPlayer.addComponent(MovementComponent.class, new MovementComponent(defaultStat.getMovementSpeed(),true));
         tempPlayer.addComponent(PlayerInputComponent.class, new PlayerInputComponent(tempPlayer, gamePanel));
         tempPlayer.addComponent(GraphicsComponent.class, new GraphicsComponent(defaultImage, tempPlayer, gameWorld));
-        tempPlayer.addComponent(CollisionComponent.class, new CollisionComponent(gameWorld));
+        tempPlayer.addComponent(CollisionComponent.class, new CollisionComponent(tempPlayer));
+        tempPlayer.addComponent(AttackComponent.class, new AttackComponent(tempPlayer));
+        tempPlayer.addComponent(DamageComponent.class, new DamageComponent(tempPlayer));
 
+        tempPlayer.moveTo(gameWorld.getCurrentRoom().getPlayerEntrances().getFirst());
         Sword playerSword = EquipmentFactory.getStarterSword(tempPlayer, gameWorld);
         tempPlayer.getEquipment().addEquipment(EquipmentType.WEAPON, playerSword);
 
@@ -62,11 +64,13 @@ public abstract class PlayerFactory {
         player.addAnimationFrames(AnimationState.RUNNING_LEFT, PlayerAnimations.getRunLeftFrames(), runAnimationSpeed);
         player.addAnimationFrames(AnimationState.RUNNING_RIGHT, PlayerAnimations.getRunRightFrames(), runAnimationSpeed);
         player.addAnimationFrames(AnimationState.RUNNING_UP, PlayerAnimations.getRunUpFrames(), runAnimationSpeed);
+        player.addAnimationFrames(AnimationState.RUNNING_DOWN, PlayerAnimations.getRunDownFrames(), runAnimationSpeed);
         player.addAnimationFrames(AnimationState.WALKING_LEFT, PlayerAnimations.getWalkLeftFrames(), walkAnimationSpeed);
         player.addAnimationFrames(AnimationState.WALKING_RIGHT, PlayerAnimations.getWalkRightFrames(), walkAnimationSpeed);
         player.addAnimationFrames(AnimationState.WALKING_UP, PlayerAnimations.getWalkUpFrames(), walkAnimationSpeed);
         player.addAnimationFrames(AnimationState.WALKING_DOWN, PlayerAnimations.getWalkDownFrames(), walkAnimationSpeed);
-        player.addAnimationFrames(AnimationState.RUNNING_DOWN, PlayerAnimations.getRunDownFrames(), runAnimationSpeed);
+        player.addAnimationFrames(AnimationState.DEAD, PlayerAnimations.getDeathFrames(), deathAnimationSpeed);
+
 
          //player.addAnimationFrames(AnimationState.WALKING, PlayerAnimations.getWalkFrames());
 

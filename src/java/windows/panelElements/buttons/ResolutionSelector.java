@@ -27,6 +27,16 @@ public class ResolutionSelector extends JPanel {
         this.add(resolutionBox);
     }
 
+    public void setResolution(Dimension dimension){
+        resolutionBox.setResolution(dimension.width, dimension.height);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        resolutionBox.setEnabled(enabled);
+    }
+
     public Pair getResolution(){
         return resolutionBox.getResolution();
     }
@@ -38,7 +48,6 @@ public class ResolutionSelector extends JPanel {
                 "1280x720",
                 "1024x768"
         };
-
         private final Map<String, Pair> resolutionPairs;
 
         public ResolutionBox(MainFrame mainFrame){
@@ -71,10 +80,20 @@ public class ResolutionSelector extends JPanel {
 
         }
 
-
         public Pair getResolution(){
             return resolutionPairs.get(getSelectedItem());
         }
+
+        public void setResolution(int width, int height){
+            for(String resolution : resolutions){
+                Pair pair = resolutionPairs.get(resolution);
+                if(pair.getFirst() == width && pair.getSecond() == height){
+                    setSelectedItem(resolution);
+                    break;
+                }
+            }
+        }
+
     }
 
     public static class Pair{

@@ -2,9 +2,8 @@ package windows.panels.gamePanel;
 
 import windows.panels.CustomPanel;
 import windows.panels.PanelType;
-import windows.panels.gamePanel.components.MovementComponent;
-import windows.panels.gamePanel.objects.Entity;
 import windows.MainFrame;
+import windows.panels.gamePanel.entities.characters.Character;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,9 +25,6 @@ public class GamePanel extends CustomPanel implements Runnable {
     public GamePanel(MainFrame mainFrame) {
         super(mainFrame);
         this.setBackground(Color.BLACK);
-        this.width = mainFrame.getWidth();
-        this.height = mainFrame.getHeight();
-        this.setPreferredSize(new Dimension(width, height));
         this.setFocusable(true);
         calculateLetterboxing();
         //startGame();
@@ -50,7 +46,7 @@ public class GamePanel extends CustomPanel implements Runnable {
     @Override
     public void onPanelDeactivation(PanelType newPanelType) {
         switch (newPanelType) {
-            case MAIN_MENU:
+            case MAIN_MENU, GAME_OVER:
                 exitGame();
                 break;
             case OPTIONS_MENU:
@@ -121,17 +117,12 @@ public class GamePanel extends CustomPanel implements Runnable {
     }
 
     private void update() {
-        if (gameWorld == null || gameWorld.getCurrentRoom() == null || gameWorld.getCurrentRoom().getEntities() == null) {
+        if (gameWorld == null || gameWorld.getCurrentRoom() == null || gameWorld.getCurrentRoom().getAliveCharacters() == null) {
             return;
         }
 
-        for (Entity entity : gameWorld.getCurrentRoom().getEntities()) {
-            if (entity.hasComponent(MovementComponent.class)) {
-                MovementComponent movement = entity.getComponent(MovementComponent.class);
-                if (movement != null) {
-                    movement.updatePosition(entity);
-                }
-            }
+        for (Character character : gameWorld.getCurrentRoom().getAliveCharacters()) {
+            character.update();
         }
     }
 
@@ -144,22 +135,6 @@ public class GamePanel extends CustomPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
         g2.translate(offsetX, offsetY);
         gameWorld.render(g2);
-    }
-
-    public int getVirtualWidth() {
-        return virtualWidth;
-    }
-
-    public int getVirtualHeight() {
-        return virtualHeight;
-    }
-
-    public int getOffsetX() {
-        return offsetX;
-    }
-
-    public int getOffsetY() {
-        return offsetY;
     }
 
     public GameWorld getGameWorld() {
@@ -224,5 +199,9 @@ public class GamePanel extends CustomPanel implements Runnable {
             e.printStackTrace();
         }
         gameThread = null;
+    }
+
+    public void gameOver() {
+        mainFrame.switchToPanel(PanelType.GAME_OVER);
     }
 }

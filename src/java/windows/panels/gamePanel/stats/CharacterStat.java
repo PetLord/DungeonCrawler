@@ -1,7 +1,7 @@
 package windows.panels.gamePanel.stats;
 
 public class CharacterStat {
-    protected int health;
+    protected int maxHealth;
     protected int mana;
     protected int strength;
     protected int dexterity;
@@ -10,15 +10,15 @@ public class CharacterStat {
     protected int magicResistance;
     protected int attackDamage;
     protected int abilityPower;
-    protected int attackSpeed;
-    protected int movementSpeed;
-    protected int criticalStrikeChance;
-    protected int criticalStrikeDamage;
-    protected int lifeSteal;
-    protected int spellVamp;
+    protected double attackSpeed;
+    protected double movementSpeed;
+    protected double criticalStrikeChance;
+    protected double criticalStrikeDamage;
+    protected double lifeSteal;
+    protected double spellVamp;
 
-    public CharacterStat(int health, int mana, int strength, int dexterity, int intelligence, int armor, int magicResistance, int attackDamage, int abilityPower, int attackSpeed, int movementSpeed, int criticalStrikeChance, int criticalStrikeDamage, int lifeSteal, int spellVamp){
-        this.health = health;
+    public CharacterStat(int health, int mana, int strength, int dexterity, int intelligence, int armor, int magicResistance, int attackDamage, int abilityPower, double attackSpeed, double movementSpeed, double criticalStrikeChance, double criticalStrikeDamage, double lifeSteal, double spellVamp){
+        this.maxHealth = health;
         this.mana = mana;
         this.strength = strength;
         this.dexterity = dexterity;
@@ -35,8 +35,8 @@ public class CharacterStat {
         this.spellVamp = spellVamp;
     }
 
-    public int getHealth() {
-        return health;
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public int getMana() {
@@ -71,27 +71,27 @@ public class CharacterStat {
         return abilityPower;
     }
 
-    public int getAttackSpeed() {
+    public double getAttackSpeed() {
         return attackSpeed;
     }
 
-    public int getMovementSpeed() {
+    public double getMovementSpeed() {
         return movementSpeed;
     }
 
-    public int getCriticalStrikeChance() {
+    public double getCriticalStrikeChance() {
         return criticalStrikeChance;
     }
 
-    public int getCriticalStrikeDamage() {
+    public double getCriticalStrikeDamage() {
         return criticalStrikeDamage;
     }
 
-    public int getLifeSteal() {
+    public double getLifeSteal() {
         return lifeSteal;
     }
 
-    public int getSpellVamp() {
+    public double getSpellVamp() {
         return spellVamp;
     }
 }

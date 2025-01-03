@@ -1,10 +1,12 @@
 package windows.panels;
 
+import audio.SoundPlayer;
 import windows.MainFrame;
 import windows.panelElements.cursors.CursorType;
 import windows.panelElements.cursors.CustomCursor;
 
 import javax.swing.*;
+import java.awt.*;
 
 public abstract class CustomPanel extends JPanel {
     protected int width;
@@ -15,6 +17,9 @@ public abstract class CustomPanel extends JPanel {
 
     public CustomPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
+        this.width = mainFrame.getWidth();
+        this.height = mainFrame.getHeight();
+        this.setPreferredSize(new Dimension(width, height));
         setCustomCursor(CursorType.POINTER);
     }
 
@@ -44,4 +49,10 @@ public abstract class CustomPanel extends JPanel {
         this.height = height;
         this.setSize(width, height);
     }
+
+    public SoundPlayer getSoundPlayer(){
+        return mainFrame.getSoundPlayer();
+    }
+
+
 }

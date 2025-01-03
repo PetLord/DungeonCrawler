@@ -1,10 +1,12 @@
 package windows;
 
 import audio.Sound;
+import audio.SoundFactory;
 import audio.SoundPlayer;
 import windows.panelElements.cursors.*;
 import windows.panels.CustomPanel;
 import windows.panels.PanelType;
+import windows.panels.gameOverPanel.GameOverPanel;
 import windows.panels.gamePanel.GamePanel;
 import windows.panels.menuPanel.MenuPanel;
 import windows.panels.optionsPanel.OptionsPanel;
@@ -23,16 +25,12 @@ public class MainFrame extends JFrame {
     private int height;
     private int width;
     private PanelType currentPanel; // Tracks the active panel
-    private GraphicsDevice gd;
+    private final GraphicsDevice gd;
 
     public MainFrame() {
         this.setResizable(false);
         this.setTitle("Dungeon Crawler");
-        //this.height = Toolkit.getDefaultToolkit().getScreenSize().height;
-        //this.width = Toolkit.getDefaultToolkit().getScreenSize().width;
-
-        //this.setDimension(1024, 768);
-        this.setDimension(1920, 1080);
+        this.setDimension(1280, 720);
         this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - width / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - height / 2);
         this.cardLayout = new CardLayout();
         this.setLayout(cardLayout);
@@ -46,11 +44,10 @@ public class MainFrame extends JFrame {
         this.createPanels();
         this.createSoundPlayer();
 
-        //this.pack();
-        this.setVisible(true);
 
-        // Start with the main menu
+        this.setVisible(true);
         switchToPanel(PanelType.MAIN_MENU);
+        this.loadSettings();
     }
 
     private void handleClosing(){
@@ -63,9 +60,20 @@ public class MainFrame extends JFrame {
         });
     }
 
-    private void closeOperation(){
+    public void closeOperation(){
         soundPlayer.unloadAllSounds();
+        saveSettings();
         System.exit(0);
+    }
+
+    private void saveSettings(){
+        ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).saveSettings();
+    }
+
+    private void loadSettings( ){
+        ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).loadSettings();
+        applyResolutionSettings();
+        applySoundSettings();
     }
 
     private void createSoundPlayer(){
@@ -73,6 +81,11 @@ public class MainFrame extends JFrame {
         JSlider soundSlider = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getSoundSlider();
         JSlider masterSlider = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getMasterSlider();
         soundPlayer = new SoundPlayer(musicSlider, soundSlider, masterSlider);
+        loadDefaultSounds();
+    }
+
+    public void loadDefaultSounds(){
+        soundPlayer.loadSound(SoundFactory.getButtonClickSound());
     }
 
     private void createPanels() {
@@ -80,13 +93,16 @@ public class MainFrame extends JFrame {
         MenuPanel menuPanel = new MenuPanel(this);
         GamePanel gamepanel = new GamePanel(this);
         OptionsPanel optionsPanel = new OptionsPanel(this);
+        GameOverPanel gameOverPanel = new GameOverPanel(this);
 
         panels.put(PanelType.GAME, gamepanel);
         panels.put(PanelType.MAIN_MENU, menuPanel);
         panels.put(PanelType.OPTIONS_MENU, optionsPanel);
+        panels.put(PanelType.GAME_OVER, gameOverPanel);
         this.add(menuPanel, PanelType.MAIN_MENU.toString());
         this.add(gamepanel, PanelType.GAME.toString());
         this.add(optionsPanel, PanelType.OPTIONS_MENU.toString());
+        this.add(gameOverPanel, PanelType.GAME_OVER.toString());
     }
 
     public void switchToPanel(PanelType panelType) {
@@ -131,7 +147,13 @@ public class MainFrame extends JFrame {
     }
 
     public void stopSound(Sound sound){
+        if(sound == null){
+            System.out.println("Sound is null");
+            return;
+        }
         soundPlayer.stopSound(sound.getSoundType());
+
+
     }
 
     public void toggleFullScreen() {
@@ -177,4 +199,10 @@ public class MainFrame extends JFrame {
     public int getWidth() {
         return width;
     }
+
+    public SoundPlayer getSoundPlayer(){
+        return soundPlayer;
+    }
+
+
 }

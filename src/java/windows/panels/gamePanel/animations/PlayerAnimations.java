@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
-public class PlayerAnimations {
+public abstract class PlayerAnimations {
 
     public static ArrayList<Image> getIdleLeftFrames() {
         ArrayList<Image> idleFrames = new ArrayList<>();
@@ -21,7 +21,7 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
@@ -39,7 +39,7 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
@@ -58,7 +58,7 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
@@ -76,7 +76,7 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
@@ -94,7 +94,7 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
@@ -112,7 +112,7 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
@@ -130,7 +130,7 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
@@ -148,7 +148,7 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
@@ -166,7 +166,7 @@ public class PlayerAnimations {
             runFrames.add(new ImageIcon(img3).getImage());
             runFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return runFrames;
@@ -184,7 +184,7 @@ public class PlayerAnimations {
             runFrames.add(new ImageIcon(img3).getImage());
             runFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return runFrames;
@@ -202,7 +202,7 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
@@ -220,10 +220,35 @@ public class PlayerAnimations {
             idleFrames.add(new ImageIcon(img3).getImage());
             idleFrames.add(new ImageIcon(img4).getImage());
         } catch (Exception e) {
-            System.out.println("Error loading default tile image");
+            System.out.println("Error loading default player image");
             return null;
         }
         return idleFrames;
+    }
+
+    public static ArrayList<Image> getDeathFrames() {
+        ArrayList<Image> frames = new ArrayList<>();
+        try {
+            BufferedImage img1 = ImageIO.read(new File("resources/images/player/Death/death1.png"));
+            BufferedImage img2 = ImageIO.read(new File("resources/images/player/Death/death2.png"));
+            BufferedImage img3 = ImageIO.read(new File("resources/images/player/Death/death3.png"));
+            BufferedImage img4 = ImageIO.read(new File("resources/images/player/Death/death4.png"));
+            BufferedImage img5 = ImageIO.read(new File("resources/images/player/Death/death5.png"));
+            BufferedImage img6 = ImageIO.read(new File("resources/images/player/Death/death6.png"));
+            BufferedImage img7 = ImageIO.read(new File("resources/images/player/Death/death7.png"));
+            frames.add(new ImageIcon(img1).getImage());
+            frames.add(new ImageIcon(img2).getImage());
+            frames.add(new ImageIcon(img3).getImage());
+            frames.add(new ImageIcon(img4).getImage());
+            frames.add(new ImageIcon(img5).getImage());
+            frames.add(new ImageIcon(img6).getImage());
+            frames.add(new ImageIcon(img7).getImage());
+
+        } catch (Exception e) {
+            System.out.println("Error loading default player image");
+            return null;
+        }
+        return frames;
     }
 
 }

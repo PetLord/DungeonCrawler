@@ -1,6 +1,6 @@
 package windows.panels.gamePanel.inputHandling;
 
-import windows.panels.gamePanel.objects.characters.Player;
+import windows.panels.gamePanel.entities.characters.Player;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

@@ -1,5 +1,7 @@
 package windows.panelElements.buttons;
 
+import audio.SoundPlayer;
+import audio.SoundType;
 import windows.panelElements.cursors.CursorType;
 import windows.panels.CustomPanel;
 
@@ -30,6 +32,7 @@ public class CustomButton extends Button {
             @Override
             public void mousePressed(MouseEvent e) {
                 setBackground(clickBackground); // Change color when pressed
+                panel.getSoundPlayer().playSound(SoundType.BUTTON_CLICK);
                 panel.setCustomCursor(CursorType.GRAB_HAND);
             }
 

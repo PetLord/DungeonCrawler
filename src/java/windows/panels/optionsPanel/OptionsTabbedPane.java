@@ -59,6 +59,17 @@ public class OptionsTabbedPane extends JTabbedPane {
         return ((DisplayTab) tabs.get(CustomTabType.DISPLAY)).getResolutionHeight();
     }
 
+    public void saveSettings() {
+        System.out.println("Saving settings");
+        ((AudioTab) tabs.get(CustomTabType.AUDIO)).saveSettings();
+        ((DisplayTab) tabs.get(CustomTabType.DISPLAY)).saveSettings();
+    }
+
+    public void loadSettings() {
+        ((AudioTab) tabs.get(CustomTabType.AUDIO)).loadSettings();
+        ((DisplayTab) tabs.get(CustomTabType.DISPLAY)).loadSettings();
+    }
+
     // Custom TabbedPaneUI class to customize tab headers
     private static class CustomTabbedPaneUI extends BasicTabbedPaneUI {
         private int tabMargin;
@@ -69,10 +80,10 @@ public class OptionsTabbedPane extends JTabbedPane {
             this.tabMargin = tabMargin;
         }
 
-        @Override
-        protected void installDefaults() {
-            super.installDefaults();
-        }
+//        @Override
+//        protected void installDefaults() {
+//            super.installDefaults();
+//        }
 
         @Override
         protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {

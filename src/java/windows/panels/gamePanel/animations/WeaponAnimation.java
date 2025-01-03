@@ -2,7 +2,7 @@ package windows.panels.gamePanel.animations;
 
 import windows.panels.gamePanel.equipment.weapons.Weapon;
 import windows.panels.gamePanel.equipment.weapons.WeaponState;
-import windows.panels.gamePanel.objects.characters.Player;
+import windows.panels.gamePanel.entities.characters.Player;
 
 import java.awt.*;
 import java.util.HashMap;

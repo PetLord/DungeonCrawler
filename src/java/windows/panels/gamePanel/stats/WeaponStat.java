@@ -2,20 +2,22 @@ package windows.panels.gamePanel.stats;
 
 public class WeaponStat {
     private int damage;
-    private int range;
+    private double range;
     private double attackSpeed;
+    private double knockback;
 
-    public WeaponStat(int damage, int range, double attackSpeed) {
+    public WeaponStat(int damage, double range, double attackSpeed, double knockback) {
         this.damage = damage;
         this.range = range;
         this.attackSpeed = attackSpeed;
+        this.knockback = knockback;
     }
 
     public int getDamage() {
         return damage;
     }
 
-    public int getRange() {
+    public double getRange() {
         return range;
     }
 
@@ -33,6 +35,10 @@ public class WeaponStat {
 
     public void setAttackSpeed(double attackSpeed) {
         this.attackSpeed = attackSpeed;
+    }
+
+    public double getKnockback() {
+        return knockback;
     }
 
 }

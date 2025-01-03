@@ -2,36 +2,71 @@ package windows.panels.gamePanel.equipment.weapons.swords;
 
 import windows.panels.gamePanel.animations.SwordAnimation;
 import windows.panels.gamePanel.components.DamageComponent;
-import windows.panels.gamePanel.components.Direction;
+import windows.panels.gamePanel.components.FaceDirection;
+import windows.panels.gamePanel.components.MovementComponent;
+import windows.panels.gamePanel.entities.characters.Character;
 import windows.panels.gamePanel.equipment.weapons.Weapon;
 import windows.panels.gamePanel.GameWorld;
-import windows.panels.gamePanel.objects.Entity;
-import windows.panels.gamePanel.objects.characters.Player;
+import windows.panels.gamePanel.entities.characters.Player;
 import windows.panels.gamePanel.stats.WeaponStat;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public abstract class Sword extends Weapon {
     public abstract void loadFrames();
-    public abstract Point getGripPoint(Direction direction);
+    public abstract Point getGripPoint(FaceDirection direction);
 
     public Sword(WeaponStat weaponStat, Player player, int width, int height, GameWorld gameWorld) {
         super(weaponStat, player, width, height);
-        this.setAnimationComponent(new SwordAnimation(this, gameWorld));
+        this.setWeaponAnimation(new SwordAnimation(this, gameWorld));
     }
 
     @Override
     public void performAttack() {
-        int range = getWeaponStat().getRange();
-        for (Entity target : owner.getGameWorld().getCurrentRoom().getEntities()) {
-            if (target != owner && target.hasComponent(DamageComponent.class) && isInRange(owner, target, range)) {
+        double range = Math.max(getWeaponStat().getRange() * owner.getGameWorld().getCurrentWidthScale(), getWeaponStat().getRange() * owner.getGameWorld().getCurrentHeightScale());
+
+        int ownerX = owner.getX();
+        int ownerY = owner.getY();
+
+
+        for (Character target : owner.getGameWorld().getCurrentRoom().getAliveCharacters()) {
+            if (target != owner && !(target instanceof Player) && target.hasComponent(DamageComponent.class) && isInRange(owner, target, range)) {
+                int targetX = target.getX();
+                int targetY = target.getY();
+
                 target.getComponent(DamageComponent.class).takeDamage(getWeaponStat().getDamage());
+
+                if(target.hasComponent(MovementComponent.class)){
+                    Point2D knockBackForce = getKnockBackForce(ownerX, ownerY, targetX, targetY);
+                    target.getComponent(MovementComponent.class).applyKnockBack(knockBackForce);
+                }
             }
         }
     }
 
-    private boolean isInRange(Entity owner, Entity target, int range) {
-        return getRectDistance(owner.getHitBox(), target.getHitBox())<= range;
+    private Point2D getKnockBackForce(int ownerX, int ownerY, int targetX, int targetY) {
+        int deltaX = targetX - ownerX;
+        int deltaY = targetY - ownerY;
+        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        double knockBackForce = this.getWeaponStat().getKnockback();
+
+        if (distance > 0) { // Avoid division by zero
+            double normalizedX = deltaX / distance;
+            double normalizedY = deltaY / distance;
+
+            double knockBackX = normalizedX * knockBackForce;
+            double knockBackY = normalizedY * knockBackForce;
+
+            return new Point2D.Double(knockBackX, knockBackY) {
+            };
+        }
+
+        return new Point(0,0);
+    }
+
+    private boolean isInRange(Player owner, Character target, double range) {
+        return getRectDistance(owner.getEquipment().getWeapon().getHitBox(), target.getHitBox())<= range;
     }
 
     private static double getRectDistance(Rectangle rect1, Rectangle rect2) {
@@ -54,6 +89,10 @@ public abstract class Sword extends Weapon {
 
         // Calculate Euclidean distance
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    public int getRange(){
+        return (int) Math.max(this.getWidth() * owner.getGameWorld().getCurrentWidthScale(), this.getHeight() * owner.getGameWorld().getCurrentHeightScale());
     }
 
 }

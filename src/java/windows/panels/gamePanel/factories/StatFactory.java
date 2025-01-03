@@ -31,12 +31,12 @@ public abstract class StatFactory {
         int magicResistance = 1;
         int attackDamage = 1;
         int abilityPower = 1;
-        int attackSpeed = 1;
-        int movementSpeed = 4;
-        int criticalStrikeChance = 1;
-        int criticalStrikeDamage = 1;
-        int lifeSteal = 1;
-        int spellVamp = 1;
+        double attackSpeed = 1;
+        double movementSpeed = 1.5;
+        double criticalStrikeChance = 1;
+        double criticalStrikeDamage = 2;
+        double lifeSteal = 0;
+        double spellVamp = 0;
 
         return new CharacterStat(health, mana, strength, dexterity, intelligence, armor, magicResistance, attackDamage, abilityPower, attackSpeed, movementSpeed, criticalStrikeChance, criticalStrikeDamage, lifeSteal, spellVamp);
     }
@@ -48,9 +48,50 @@ public abstract class StatFactory {
 
     public static WeaponStat getDefaultWeaponStat(){
         int damage = 5;
-        int range = 1;
+        double range = 1;
         double attackSpeed = 2;
+        double knockBack = 10;
 
-        return new WeaponStat(damage, range, attackSpeed);
+        return new WeaponStat(damage, range, attackSpeed, knockBack);
+    }
+
+    public static CharacterStat getZombieStat(){
+        int health = 100;
+        int mana = 0;
+        int strength = 10;
+        int dexterity = 1;
+        int intelligence = 1;
+        int armor = 1;
+        int magicResistance = 1;
+        int attackDamage = 1;
+        int abilityPower = 1;
+        double attackSpeed = 1;
+        double movementSpeed = 1;
+        double criticalStrikeChance = 0;
+        double criticalStrikeDamage = 1;
+        double lifeSteal = 0;
+        double spellVamp = 0;
+
+        return new CharacterStat(health, mana, strength, dexterity, intelligence, armor, magicResistance, attackDamage, abilityPower, attackSpeed, movementSpeed, criticalStrikeChance, criticalStrikeDamage, lifeSteal, spellVamp);
+    }
+
+    public static CharacterStat getSlimeStat(){
+        int health = 50;
+        int mana = 0;
+        int strength = 1;
+        int dexterity = 1;
+        int intelligence = 1;
+        int armor = 1;
+        int magicResistance = 1;
+        int attackDamage = 1;
+        int abilityPower = 1;
+        int attackSpeed = 1;
+        double movementSpeed = 1;
+        double criticalStrikeChance = 0;
+        double criticalStrikeDamage = 1;
+        double lifeSteal = 0;
+        double spellVamp = 0;
+
+        return new CharacterStat(health, mana, strength, dexterity, intelligence, armor, magicResistance, attackDamage, abilityPower, attackSpeed, movementSpeed, criticalStrikeChance, criticalStrikeDamage, lifeSteal, spellVamp);
     }
 }

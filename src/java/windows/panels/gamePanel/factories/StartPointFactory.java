@@ -1,6 +1,6 @@
 package windows.panels.gamePanel.factories;
 
-import windows.panels.gamePanel.objects.structures.StartPoint;
+import windows.panels.gamePanel.entities.structures.PlayerEntrance;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,8 +10,8 @@ import java.io.File;
 
 public abstract class StartPointFactory {
 
-    public static StartPoint getDefaultStartPoint(int startRow, int startCol, int tileWidth, int tileHeight) {
-        return new StartPoint(startRow, startCol, tileWidth, tileHeight, getDefaultStartPointImage());
+    public static PlayerEntrance getDefaultStartPoint(int startRow, int startCol, int tileWidth, int tileHeight) {
+        return new PlayerEntrance(startRow, startCol, tileWidth, tileHeight, getDefaultStartPointImage());
     }
 
     public static Image getDefaultStartPointImage() {

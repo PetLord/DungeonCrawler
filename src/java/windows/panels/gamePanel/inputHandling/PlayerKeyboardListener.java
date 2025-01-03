@@ -2,7 +2,7 @@ package windows.panels.gamePanel.inputHandling;
 
 import windows.panels.gamePanel.GamePanel;
 import windows.panels.gamePanel.components.MovementComponent;
-import windows.panels.gamePanel.objects.characters.Player;
+import windows.panels.gamePanel.entities.characters.Player;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
