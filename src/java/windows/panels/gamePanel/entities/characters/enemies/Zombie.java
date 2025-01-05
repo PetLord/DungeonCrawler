@@ -3,7 +3,7 @@ package windows.panels.gamePanel.entities.characters.enemies;
 import windows.panels.gamePanel.GamePanel;
 import windows.panels.gamePanel.components.FaceDirection;
 import windows.panels.gamePanel.entities.structures.Room;
-import windows.panels.gamePanel.factories.StatFactory;
+import factories.StatFactory;
 import windows.panels.gamePanel.stats.CharacterStat;
 
 import java.awt.*;

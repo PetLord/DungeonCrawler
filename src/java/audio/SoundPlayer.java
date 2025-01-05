@@ -1,10 +1,10 @@
 package audio;
 
-import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+// COULD BE SINGLETON
 public class SoundPlayer {
     private final Map<SoundType, Sound> soundCache;
     private final JSlider musicSlider;
@@ -29,17 +29,17 @@ public class SoundPlayer {
         if(sound == null) {
             return;
         }
-        if(soundCache.containsKey(sound.getSoundType())) {
-            soundCache.get(sound.getSoundType()).stop();
-            soundCache.remove(sound.getSoundType());
+        if (!soundCache.containsKey(sound.getSoundType())) {
+            loadSound(sound);
+        }else{
+            sound.stop();
         }
-        soundCache.put(sound.getSoundType(), sound);
         new Thread(sound::play).start();
     }
 
     public void playSound(SoundType soundType){
         Sound sound = soundCache.get(soundType);
-        if(sound != null){;
+        if(sound != null){
             sound.play();
         }
     }

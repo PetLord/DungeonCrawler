@@ -1,13 +1,14 @@
 package windows.panels.gamePanel.entities.characters.enemies;
 
+import factories.SoundFactory;
 import windows.panels.gamePanel.GamePanel;
 import windows.panels.gamePanel.GameWorld;
 import windows.panels.gamePanel.components.*;
 import windows.panels.gamePanel.entities.characters.Player;
 import windows.panels.gamePanel.entities.characters.enemies.enemyBehaviours.*;
 import windows.panels.gamePanel.entities.structures.Room;
-import windows.panels.gamePanel.factories.EnemyFactory;
-import windows.panels.gamePanel.factories.StatFactory;
+import factories.EnemyFactory;
+import factories.StatFactory;
 import windows.panels.gamePanel.stats.CharacterStat;
 
 import java.awt.*;
@@ -30,8 +31,17 @@ public class Slime extends Enemy {
         this.addComponent(CollisionComponent.class, new CollisionComponent(this));
         this.addComponent(DamageComponent.class, new DamageComponent(this));
         this.addComponent(AttackComponent.class, new AttackComponent(this));
-
+        this.addComponent(SoundComponent.class, new SoundComponent(gamePanel.getMainFrame()));
+        loadSlimeSounds();
         this.slimeAI = new SlimeAI(this);
+    }
+
+    private void loadSlimeSounds(){
+        SoundComponent soundComponent = this.getComponent(SoundComponent.class);
+        soundComponent.addDamageSound(SoundFactory.getSlimeDamage1Sound());
+        soundComponent.addDamageSound(SoundFactory.getSlimeDamage2Sound());
+        soundComponent.addDamageSound(SoundFactory.getSlimeDamage3Sound());
+        soundComponent.addDeathSound(SoundFactory.getSlimeDeathSound());
     }
 
     @Override
@@ -43,9 +53,8 @@ public class Slime extends Enemy {
 
     @Override
     public void die() {
-        System.out.println("Slime died");
-
         this.isAlive = false;
+        this.getComponent(SoundComponent.class).playDeathSound();
         this.getComponent(AnimationComponent.class).setAnimationState(AnimationState.DEAD);
     }
 

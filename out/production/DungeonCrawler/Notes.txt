@@ -25,7 +25,7 @@ Komplexitas                         -- done
 
 hálózati elemek használata: például kliens-szerver, multiplayer                     -- nincs
 bonyolultabb grafika: például 3D/háttér videó/pixel art, saját betűtípus/színek stb -- sajat kurzor, background, player
-tervezési minták implementálása                                                     -- Strategy (AI), Singleton (SettingsManager)
+tervezési minták implementálása                                                     -- Strategy (AI), Singleton (SettingsManager), Observer?? (SoundPlayer, Mainframe)
 
 !! known bug: if you rescale while playing, the player will be misplaced a bit
 !! damage sound

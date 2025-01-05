@@ -67,6 +67,10 @@ public class OptionsPanel extends CustomPanel {
         optionsTabbedPane.loadSettings();
     }
 
+    public boolean isFullScreen() {
+        return optionsTabbedPane.isFullScreen();
+    }
+
     public class ButtonPanel extends JPanel{
         private final CustomButton defaultButton;
         private final CustomButton applyButton;

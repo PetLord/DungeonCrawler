@@ -76,7 +76,7 @@ public abstract class Entity {
     }
 
     public Rectangle getHitBox(){
-        return new Rectangle(x, y, width, height);
+        return new Rectangle(x, y, (int) (width * getGameWorld().getCurrentWidthScale()), (int) (height * getGameWorld().getCurrentHeightScale()));
     }
 
 
@@ -104,5 +104,9 @@ public abstract class Entity {
 
     public String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    public void setMyRoom(Room myRoom) {
+        this.myRoom = myRoom;
     }
 }

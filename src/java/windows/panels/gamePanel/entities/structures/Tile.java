@@ -3,8 +3,9 @@ package windows.panels.gamePanel.entities.structures;
 import java.awt.*;
 
 public class Tile implements Comparable<Tile> {
-    private int x, y;
-    private final Image image;
+    private final int x;
+    private final int y;
+    private Image image;
     private final boolean isPassable;
     private final int precedence;
 
@@ -22,6 +23,10 @@ public class Tile implements Comparable<Tile> {
 
     public boolean isPassable() {
         return isPassable;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     @Override
