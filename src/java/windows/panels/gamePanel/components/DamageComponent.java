@@ -13,12 +13,16 @@ public class DamageComponent {
     public void takeDamage(int damage) {
         int newHealth = character.getCurrentHealth() - calculateDamage(damage);
 
+        if(character.hasComponent(SoundComponent.class)){
+            character.getComponent(SoundComponent.class).playDamageSound();
+        }
+
         if (newHealth <= 0) {
             character.die();
             newHealth = 0;
         }
         character.setCurrentHealth(newHealth);
-        System.out.println(character.getName() + ":" + character.getStats().getMaxHealth() + "/" + character.getCurrentHealth());
+        //System.out.println(character.getName() + ":" + character.getStats().getMaxHealth() + "/" + character.getCurrentHealth());
     }
 
 
@@ -27,7 +31,7 @@ public class DamageComponent {
         int totalArmor = character.getStats().getArmor();
 
         if(character.getStats().getArmor() > 0){
-            damage = (int) Math.max(1, damage * ( 1 - character.getStats().getArmor()/100f));
+            damage = (int) Math.max(1, damage * ( 1 - totalArmor/100f));
         }
         return damage;
     }

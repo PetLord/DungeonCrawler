@@ -12,7 +12,6 @@ public class FullScreenButton extends CustomButton {
     }
 
     public void buttonPressed() {
-        System.out.println("Fullscreen:" + isFullScreen);
         isFullScreen = !isFullScreen;
         resolutionSelector.setEnabled(!isFullScreen);
         panel.toggleFullScreen();

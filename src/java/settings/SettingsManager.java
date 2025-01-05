@@ -45,7 +45,6 @@ public class SettingsManager {
     }
 
     public void saveFullScreen(boolean isFullScreen) {
-        System.out.println("Saving fullscreen: " + isFullScreen);
         properties.setProperty("fullscreen", String.valueOf(isFullScreen));
         try {
             properties.store(new FileOutputStream(SETTINGS_FILE), null);

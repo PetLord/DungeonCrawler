@@ -1,7 +1,7 @@
 package windows.panels.menuPanel;
 
 import audio.Sound;
-import audio.SoundFactory;
+import factories.SoundFactory;
 import windows.MainFrame;
 import windows.panelElements.buttons.ExitButton;
 import windows.panelElements.buttons.OptionsButton;

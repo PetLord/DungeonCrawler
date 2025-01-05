@@ -1,32 +1,44 @@
 package windows.panels.gamePanel.entities.structures;
 
+import factories.DoorFactory;
 import windows.panels.gamePanel.entities.characters.Character;
+import windows.panels.gamePanel.entities.characters.Player;
+import windows.panels.gamePanel.entities.structures.worldMap.WorldMap;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 public class Room {
-    private static boolean wasChanged = false;
+    private final int mapX, mapY;
+    private static boolean wasChanged = true;
     private final int numRows, numCols;
     private PriorityQueue<Tile>[][] tileGrid;
-    private final ArrayList<RoomObject> objects;
-    private final ArrayList<PlayerEntrance> playerEntrances;
-    private final ArrayList<MobSpawnLocation> mobSpawnLocations;
-    private ArrayList<Character> characters;
-
+    private final ArrayList<RoomObject> objects = new ArrayList<>();
+    private PlayerSpawnPoint spawnLocation;
+    private final ArrayList<MobSpawnLocation> mobSpawnLocations = new ArrayList<>();
+    private final Map<WallDirection, Point> doorLocations = new HashMap<>();
+    private final Map<WallDirection, Door> doors = new HashMap<>();
+    private final ArrayList<Character> characters = new ArrayList<>();
+    private final WorldMap worldMap;
     private int tileHeight;
     private int tileWidth;
 
-    public Room(int numRows, int numCols, int tileWidth, int tileHeight) {
+    public Room(WorldMap worldMap, int mapX, int mapY, int numRows, int numCols, int tileWidth, int tileHeight,
+                Point northDoorLocation, Point southDoorLocation, Point eastDoorLocation, Point westDoorLocation) {
+        this.worldMap = worldMap;
+        this.mapX = mapX;
+        this.mapY = mapY;
         this.numRows = numRows;
         this.numCols = numCols;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        this.objects = new ArrayList<>();
-        this.characters = new ArrayList<>();
-        this.playerEntrances = new ArrayList<>();
-        this.mobSpawnLocations = new ArrayList<>();
+        this.doorLocations.put(WallDirection.NORTH, northDoorLocation);
+        this.doorLocations.put(WallDirection.SOUTH, southDoorLocation);
+        this.doorLocations.put(WallDirection.EAST, eastDoorLocation);
+        this.doorLocations.put(WallDirection.WEST, westDoorLocation);
         initializeGrid();
     }
 
@@ -50,9 +62,8 @@ public class Room {
         wasChanged = true;
     }
 
-    public void addPlayerEntrance(PlayerEntrance playerEntrance){
-        playerEntrances.add(playerEntrance);
-        addObject(playerEntrance);
+    public void setPlayerSpawnLocation(PlayerSpawnPoint spawnLocation) {
+        this.spawnLocation = spawnLocation;
     }
 
     public void addMobSpawnLocation(MobSpawnLocation mobSpawnLocation){
@@ -63,9 +74,8 @@ public class Room {
         return mobSpawnLocations;
     }
 
-    public void recreateGrid() {
+    private void recreateGrid() {
         clearGrid();
-
         for (RoomObject object : objects) {
             for (Tile tile : object.getTiles()) {
                 tileGrid[tile.getX()][tile.getY()].add(tile);
@@ -90,6 +100,10 @@ public class Room {
                 tileGrid[row][col] = new PriorityQueue<>();
             }
         }
+    }
+
+    public void switchedToRoom() {
+        wasChanged = true;
     }
 
     public void addCharacter(Character character) {
@@ -117,6 +131,7 @@ public class Room {
     public int getTileWidth() {
         return tileWidth;
     }
+
     public int getWidth() {
         return numCols * tileWidth;
     }
@@ -125,34 +140,16 @@ public class Room {
         return numRows * tileHeight;
     }
 
-    public int getNumRows() {
-        return numRows;
-    }
-
-    public int getNumCols() {
-        return numCols;
-    }
-
-    public void setCharacters(ArrayList<Character> characters) {
-        this.characters = characters;
-    }
-
     public PriorityQueue<Tile>[][] getTileGrid() {
         return tileGrid;
     }
 
-    public ArrayList<Tile> getTiles() {
-        ArrayList<Tile> tiles = new ArrayList<>();
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                tiles.addAll(tileGrid[row][col]);
-            }
-        }
-        return tiles;
+    public PlayerSpawnPoint getSpawnLocation() {
+        return spawnLocation;
     }
 
-    public ArrayList<PlayerEntrance> getPlayerEntrances() {
-        return playerEntrances;
+    public Point getDoorLocation(WallDirection direction) {
+        return doorLocations.get(direction);
     }
 
     public void setWidth(int width) {
@@ -165,6 +162,10 @@ public class Room {
         for (Character character : characters) {
             int newX = (int) (character.getX() * scaleX);
             character.setX(newX);
+        }
+
+        for (RoomObject object : objects) {
+            object.setTileWidth(tileWidth);
         }
     }
 
@@ -179,6 +180,44 @@ public class Room {
             int newY = (int) (character.getY() * scaleY);
             character.setY(newY);
         }
+
+        for (RoomObject object : objects) {
+            object.setTileHeight(tileHeight);
+        }
     }
 
+    public void addDoor(WallDirection direction){
+        Point location = doorLocations.get(direction);
+        Door door = DoorFactory.getDoor(location.x, location.y, tileWidth, tileHeight, direction, worldMap);
+        doors.put(direction, door);
+        objects.add(door);
+    }
+
+    public Door getDoor(WallDirection direction){
+        return doors.get(direction);
+    }
+
+    public int getMapX() {
+        return mapX;
+    }
+
+    public int getMapY() {
+        return mapY;
+    }
+
+    public void update() {
+        //update every character
+        ArrayList<Character> aliveCharacters = getAliveCharacters();
+        for (Character character : aliveCharacters) {
+            character.update();
+        }
+
+
+        //if only the player remains alive, open the doors
+        if (aliveCharacters.size() == 1 && aliveCharacters.getFirst() instanceof Player) {
+            for (Door door : doors.values()) {
+                door.openDoor();
+            }
+        }
+    }
 }

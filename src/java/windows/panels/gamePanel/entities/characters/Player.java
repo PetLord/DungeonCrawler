@@ -1,11 +1,12 @@
 package windows.panels.gamePanel.entities.characters;
 
 import windows.panels.gamePanel.components.*;
+import windows.panels.gamePanel.entities.structures.Door;
 import windows.panels.gamePanel.entities.structures.Room;
+import windows.panels.gamePanel.entities.structures.WallDirection;
 import windows.panels.gamePanel.equipment.Equipment;
 import windows.panels.gamePanel.equipment.weapons.Weapon;
 import windows.panels.gamePanel.GamePanel;
-import windows.panels.gamePanel.factories.PlayerFactory;
 import windows.panels.gamePanel.stats.CharacterStat;
 
 import java.awt.*;
@@ -18,7 +19,6 @@ public class Player extends Character {
 
     public Player(String name, CharacterStat characterStat, GamePanel gamePanel, Room myRoom) {
         super(name, defaultPlayerWidth, defaultPlayerHeight, characterStat, gamePanel, myRoom);
-        PlayerFactory.loadDefaultPlayerAnimationFrames(this);
         this.equipment = new Equipment();
     }
 
@@ -44,12 +44,14 @@ public class Player extends Character {
         }
     }
 
-    public void playerRightClick(){
-        // Right click logic
-    }
+    public void playerRightClick(int mouseX, int mouseY){
+        for(WallDirection direction : WallDirection.values()){
+            Door door = getMyRoom().getDoor(direction);
 
-    public boolean hasWeapon(){
-        return getEquipment().getWeapon() != null;
+            if(door != null && door.isMouseOver(mouseX, mouseY)){
+                door.playerEnteringDoor();
+            }
+        }
     }
 
     @Override
@@ -59,7 +61,6 @@ public class Player extends Character {
             case SOUTH -> playerHandPosition.SOUTH;
             case EAST -> playerHandPosition.EAST;
             case WEST -> playerHandPosition.WEST;
-            default -> null;
         };
     }
 
@@ -80,10 +81,15 @@ public class Player extends Character {
 
     @Override
     public void die() {
-        System.out.println("Player died");
+        //System.out.println("Player died");
         this.isAlive = false;
         this.getComponent(AnimationComponent.class).setAnimationState(AnimationState.DEAD);
+
+        if(this.hasComponent(SoundComponent.class)){
+            this.getComponent(SoundComponent.class).playDeathSound();
+        }
     }
+
 
     public static class playerHandPosition{
         public static final int playerHeight = 26;

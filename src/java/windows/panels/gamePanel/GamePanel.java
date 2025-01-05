@@ -121,9 +121,7 @@ public class GamePanel extends CustomPanel implements Runnable {
             return;
         }
 
-        for (Character character : gameWorld.getCurrentRoom().getAliveCharacters()) {
-            character.update();
-        }
+        gameWorld.getCurrentRoom().update();
     }
 
     @Override
@@ -203,5 +201,13 @@ public class GamePanel extends CustomPanel implements Runnable {
 
     public void gameOver() {
         mainFrame.switchToPanel(PanelType.GAME_OVER);
+    }
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
     }
 }

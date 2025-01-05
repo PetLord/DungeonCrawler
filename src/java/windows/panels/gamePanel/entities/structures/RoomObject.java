@@ -6,8 +6,8 @@ import java.util.Arrays;
 public abstract class RoomObject {
     private final int startRow, startCol;
     private final Tile[][] tiles;
-    private final int tileHeight;
-    private final int tileWidth;
+    private int tileHeight;
+    private int tileWidth;
     private final int numRows;
     private final int numCols;
 
@@ -23,6 +23,14 @@ public abstract class RoomObject {
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 tiles[row][col] = new Tile(startRow + row, startCol + col, image, isTilePassable(), getPrecedence());
+            }
+        }
+    }
+
+    public void setNewImage(Image newImage) {
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                tiles[row][col].setImage(newImage);
             }
         }
     }
@@ -47,6 +55,14 @@ public abstract class RoomObject {
         return tileWidth;
     }
 
+    public void setTileWidth(int tileWidth) {
+        this.tileWidth = tileWidth;
+    }
+
+    public void setTileHeight(int tileHeight) {
+        this.tileHeight = tileHeight;
+    }
+
     public int getNumRows() {
         return numRows;
     }
@@ -54,6 +70,7 @@ public abstract class RoomObject {
     public int getNumCols() {
         return numCols;
     }
+
 
     public abstract boolean isTilePassable();
     public abstract int getPrecedence();

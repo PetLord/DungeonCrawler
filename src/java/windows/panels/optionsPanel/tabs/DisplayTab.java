@@ -55,4 +55,8 @@ public class DisplayTab extends CustomTab {
         resolutionSelector.setResolution(settingsManager.getSavedResolution());
         fullScreenButton.setFullScreen(settingsManager.getSavedFullScreen());
     }
+
+    public boolean isFullScreen() {
+        return fullScreenButton.isFullScreen();
+    }
 }

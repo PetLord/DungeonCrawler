@@ -1,7 +1,7 @@
 package windows;
 
 import audio.Sound;
-import audio.SoundFactory;
+import factories.SoundFactory;
 import audio.SoundPlayer;
 import windows.panelElements.cursors.*;
 import windows.panels.CustomPanel;
@@ -135,6 +135,9 @@ public class MainFrame extends JFrame {
     }
 
     public void applyResolutionSettings(){
+        if(((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).isFullScreen()){
+            return;
+        }
         this.width = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getResolutionWidth();
         this.height = ((OptionsPanel)panels.get(PanelType.OPTIONS_MENU)).getResolutionHeight();
         this.setSize(width, height);
@@ -152,8 +155,6 @@ public class MainFrame extends JFrame {
             return;
         }
         soundPlayer.stopSound(sound.getSoundType());
-
-
     }
 
     public void toggleFullScreen() {

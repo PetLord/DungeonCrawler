@@ -60,7 +60,6 @@ public class OptionsTabbedPane extends JTabbedPane {
     }
 
     public void saveSettings() {
-        System.out.println("Saving settings");
         ((AudioTab) tabs.get(CustomTabType.AUDIO)).saveSettings();
         ((DisplayTab) tabs.get(CustomTabType.DISPLAY)).saveSettings();
     }
@@ -68,6 +67,10 @@ public class OptionsTabbedPane extends JTabbedPane {
     public void loadSettings() {
         ((AudioTab) tabs.get(CustomTabType.AUDIO)).loadSettings();
         ((DisplayTab) tabs.get(CustomTabType.DISPLAY)).loadSettings();
+    }
+
+    public boolean isFullScreen() {
+        return ((DisplayTab) tabs.get(CustomTabType.DISPLAY)).isFullScreen();
     }
 
     // Custom TabbedPaneUI class to customize tab headers

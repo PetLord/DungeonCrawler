@@ -28,7 +28,7 @@ public class AnimationComponent {
 
     public void update() {
         if (currentFrames == null || currentFrames.isEmpty()) {
-            System.out.println("No frames to animate");
+            //System.out.println("No frames to animate");
             return; // Guard against uninitialized or empty frames
         }
 

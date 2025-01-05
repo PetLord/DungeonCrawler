@@ -51,14 +51,6 @@ public class Sound {
         return soundType;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public boolean isLoop() {
-        return loop;
-    }
-
     public void setVolume(float volume) {
         if (volumeControl == null) {
             System.err.println("Volume control not supported for sound: " + name);

@@ -6,7 +6,7 @@ import windows.panels.gamePanel.components.FaceDirection;
 import windows.panels.gamePanel.entities.structures.MobSpawnLocation;
 import windows.panels.gamePanel.entities.structures.Room;
 import windows.panels.gamePanel.entities.Entity;
-import windows.panels.gamePanel.entities.structures.PlayerEntrance;
+import windows.panels.gamePanel.entities.structures.PlayerSpawnPoint;
 import windows.panels.gamePanel.stats.CharacterStat;
 
 import java.awt.*;
@@ -75,7 +75,7 @@ public abstract class Character extends Entity {
         this.setY(mobSpawnLocation.getStartCol() * mobSpawnLocation.getTileHeight());
     }
 
-    public void moveTo(PlayerEntrance sp) {
+    public void moveTo(PlayerSpawnPoint sp) {
         if (sp == null) {
             return;
         }
@@ -110,4 +110,6 @@ public abstract class Character extends Entity {
         }
         this.getComponent(AnimationComponent.class).addAnimationFrames(state, frames, speed);
     }
+
+
 }
