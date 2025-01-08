@@ -3,7 +3,7 @@ Dungeon Crawler is a 2D, top-down dungeon exploration game built in Java.
 The game combines randomly generated levels, unique enemies and engaging in melee combat.
 Players navigate through a dungeon, battling slimes and finally a Boss.
 The game has adjusted scaling, it can be played on different-sized screens or resolutions and still looks the same.
-Four basic songs are added to the menu, and the entities all have walking, idle, and death animation.
+Four basic songs are added to the menu, and the entities all have walking, idle, and death animations.
 
 Menu:
 ![image](https://github.com/user-attachments/assets/c2604485-42c4-4b7c-b8b4-71b267c70ebd)
