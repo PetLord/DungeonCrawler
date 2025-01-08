@@ -1,7 +1,6 @@
 package windows.panels.gamePanel.components;
 
 import audio.Sound;
-import audio.SoundType;
 import windows.MainFrame;
 import java.util.ArrayList;
 

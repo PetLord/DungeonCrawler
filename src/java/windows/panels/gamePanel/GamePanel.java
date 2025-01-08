@@ -3,7 +3,6 @@ package windows.panels.gamePanel;
 import windows.panels.CustomPanel;
 import windows.panels.PanelType;
 import windows.MainFrame;
-import windows.panels.gamePanel.entities.characters.Character;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +26,6 @@ public class GamePanel extends CustomPanel implements Runnable {
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         calculateLetterboxing();
-        //startGame();
     }
 
     @Override

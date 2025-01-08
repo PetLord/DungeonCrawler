@@ -25,18 +25,6 @@ public class WeaponStat {
         return attackSpeed;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    public void setRange(int range) {
-        this.range = range;
-    }
-
-    public void setAttackSpeed(double attackSpeed) {
-        this.attackSpeed = attackSpeed;
-    }
-
     public double getKnockback() {
         return knockback;
     }

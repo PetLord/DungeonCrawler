@@ -220,4 +220,8 @@ public class Room {
             }
         }
     }
+
+    public WorldMap getWorldMap() {
+        return worldMap;
+    }
 }

@@ -1,6 +1,5 @@
 package windows.panelElements.buttons;
 
-import audio.SoundPlayer;
 import audio.SoundType;
 import windows.panelElements.cursors.CursorType;
 import windows.panels.CustomPanel;

@@ -5,6 +5,7 @@ import factories.SoundFactory;
 import audio.SoundPlayer;
 import windows.panelElements.cursors.*;
 import windows.panels.CustomPanel;
+import windows.panels.HUD.HUDPanel;
 import windows.panels.PanelType;
 import windows.panels.gameOverPanel.GameOverPanel;
 import windows.panels.gamePanel.GamePanel;
@@ -26,6 +27,7 @@ public class MainFrame extends JFrame {
     private int width;
     private PanelType currentPanel; // Tracks the active panel
     private final GraphicsDevice gd;
+    private final HUDPanel hudPanel = new HUDPanel();
 
     public MainFrame() {
         this.setResizable(false);
@@ -43,7 +45,6 @@ public class MainFrame extends JFrame {
         this.createCursors();
         this.createPanels();
         this.createSoundPlayer();
-
 
         this.setVisible(true);
         switchToPanel(PanelType.MAIN_MENU);

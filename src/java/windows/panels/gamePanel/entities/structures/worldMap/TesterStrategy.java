@@ -20,7 +20,7 @@ public class TesterStrategy implements WorldMapGenerationStrategy {
                     continue;
                 }
 
-                roomGrid[i][j] = RoomFactory.IRoom(worldMap, i, j, gameWorld.getWorldWidth(), gameWorld.getWorldHeight());
+                roomGrid[i][j] = RoomFactory.LRoom(worldMap, i, j, gameWorld.getWorldWidth(), gameWorld.getWorldHeight());
                 int finalI = i;
                 int finalJ = j;
                 roomGrid[i][j].getMobSpawnLocations().forEach((location) -> {
@@ -41,7 +41,7 @@ public class TesterStrategy implements WorldMapGenerationStrategy {
 
     @Override
     public Dimension getStarterRoomPosition() {
-        return new Dimension(1, 1);
+        return new Dimension(0, 0);
     }
 
     private boolean spawnMonster(){

@@ -35,7 +35,7 @@ public abstract class Sword extends Weapon {
                 int targetX = target.getX();
                 int targetY = target.getY();
 
-                target.getComponent(DamageComponent.class).takeDamage(getWeaponStat().getDamage());
+                target.getComponent(DamageComponent.class).takeDamage(getWeaponStat().getDamage() + owner.getStats().getAttackDamage());
 
                 if(target.hasComponent(MovementComponent.class)){
                     Point2D knockBackForce = getKnockBackForce(ownerX, ownerY, targetX, targetY);

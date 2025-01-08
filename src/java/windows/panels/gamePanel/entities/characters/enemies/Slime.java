@@ -18,10 +18,10 @@ import java.util.Map;
 
 public class Slime extends Enemy {
     private final SlimeAI slimeAI;
-    private static final int defaultSlimeHeight = 50;
-    private static final int defaultSlimeWidth = 50;
+    private static final int defaultSlimeHeight = 45;
+    private static final int defaultSlimeWidth = 45;
 
-    public Slime(String name,  GamePanel gamePanel, GameWorld gameWorld, Room myRoom) {
+    public Slime(String name, GamePanel gamePanel, GameWorld gameWorld, Room myRoom) {
         super(name, defaultSlimeWidth, defaultSlimeHeight, StatFactory.getSlimeStat(), gamePanel, myRoom);
         double speed = this.getStats().getMovementSpeed();
         Image image = EnemyFactory.getDefaultSlimeImage();
@@ -67,7 +67,6 @@ public class Slime extends Enemy {
     public Point2D getHandPosition(FaceDirection direction) {
         return new Point2D.Double(this.getX() + this.getWidth() / 2.0, this.getY() + this.getHeight() / 2.0);
     }
-
 
     @Override
     public CharacterStat getStats() {

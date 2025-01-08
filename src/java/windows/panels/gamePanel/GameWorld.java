@@ -1,5 +1,6 @@
 package windows.panels.gamePanel;
 
+import windows.panels.HUD.HUDPanel;
 import windows.panels.gamePanel.components.GraphicsComponent;
 import windows.panels.gamePanel.entities.Entity;
 import windows.panels.gamePanel.entities.characters.Character;
@@ -7,7 +8,7 @@ import factories.PlayerFactory;
 import windows.panels.gamePanel.entities.characters.Player;
 import windows.panels.gamePanel.entities.structures.Room;
 import windows.panels.gamePanel.entities.structures.Tile;
-import windows.panels.gamePanel.entities.structures.worldMap.TesterStrategy;
+import windows.panels.gamePanel.entities.structures.worldMap.ProceduralMazeStrategy;
 import windows.panels.gamePanel.entities.structures.worldMap.WorldMap;
 
 import java.awt.*;
@@ -21,17 +22,17 @@ public class GameWorld {
     private final GamePanel gamePanel;
     private final WorldMap worldMap;
     private final Player player;
+    private final HUDPanel hudPanel = new HUDPanel();
 
     public GameWorld(GamePanel gamepanel, int width, int height) {
         this.gamePanel = gamepanel;
         this.worldWidth = width;
         this.worldHeight = height;
 
-        worldMap = new WorldMap(this, 3, 3, new TesterStrategy());
+        worldMap = new WorldMap(this, 3, 3, new ProceduralMazeStrategy());
         player = PlayerFactory.createDefaultPlayer(gamePanel, this, this.getCurrentRoom());
 
         getCurrentRoom().addCharacter(player);
-
         gamepanel.startGameThread();
     }
 
@@ -50,6 +51,9 @@ public class GameWorld {
                 character.render(g2);
             }
         }
+
+        hudPanel.updateHealth(getPlayer().getCurrentHealth(), getPlayer().getStats().getMaxHealth());
+        hudPanel.render(g2);
     }
 
 

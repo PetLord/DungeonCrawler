@@ -55,10 +55,6 @@ public class OptionsPanel extends CustomPanel {
         return optionsTabbedPane.getResolutionHeight();
     }
 
-    public OptionsTabbedPane getOptionsTabbedPane() {
-        return optionsTabbedPane;
-    }
-
     public void saveSettings() {
         optionsTabbedPane.saveSettings();
     }
@@ -104,9 +100,6 @@ public class OptionsPanel extends CustomPanel {
             continueButton.setVisible(false);
         }
 
-        public CustomButton getContinueButton() {
-            return continueButton;
-        }
     }
 
     @Override

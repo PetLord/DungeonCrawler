@@ -62,10 +62,6 @@ public class WorldMap {
             throw new IllegalStateException("Cannot move in the specified direction. No valid room exists.");
         }
 
-        for(WallDirection direction : WallDirection.values()){
-            System.out.println("Direction: " + direction + " location" + currentRoom.getDoorLocation(direction));
-        }
-
         Player player = gameWorld.getPlayer();
         Room newRoom = roomGrid[newX][newY];
         Point doorLocation = newRoom.getDoorLocation(doorDirection.opposite());
@@ -93,8 +89,15 @@ public class WorldMap {
         // Adjust player's position to be near the door but not inside the wall
         int offsetX = moveDirection.getDeltaX() * 2;
         int offsetY = moveDirection.getDeltaY() * 2;
-
         player.setX((doorLocation.y + offsetX) * newRoom.getTileWidth());
         player.setY((doorLocation.x + offsetY) * newRoom.getTileHeight());
+    }
+
+    public double getCurrentWidthScale(){
+        return gameWorld.getCurrentWidthScale();
+    }
+
+    public double getCurrentHeightScale(){
+        return gameWorld.getCurrentHeightScale();
     }
 }

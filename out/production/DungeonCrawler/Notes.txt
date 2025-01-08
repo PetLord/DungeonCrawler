@@ -1,17 +1,19 @@
-To-do:
-
-Animation               -- need more keyframes
 Weapons                 -- need more weapons
 fix weapon range        -- needs testing
 Add more sounds         -- to do
 Enemies                 -- to do
     Slime AI            -- done
-Solve attacking         -- to do
 Healthbar               -- to do
 Add more rooms          -- to do
 Random floor generation -- to do
 Scalable character      -- to do
 Skill tree?             -- to do
+Inventory               -- to do
+Randomize stats enemies -- to do
+custom font             -- to do
+simple slime  boss      -- to do
+add damage sound        -- to do
+add equipment to dmg calc -- to do
 
 Projekt szuksegletek:
 
@@ -28,7 +30,3 @@ bonyolultabb grafika: például 3D/háttér videó/pixel art, saját betűtípus
 tervezési minták implementálása                                                     -- Strategy (AI), Singleton (SettingsManager), Observer?? (SoundPlayer, Mainframe)
 
 !! known bug: if you rescale while playing, the player will be misplaced a bit
-!! damage sound
-!! add equipment to dmg calc
-
-
