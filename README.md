@@ -13,5 +13,6 @@ Options:
 
 Gameplay:
 ![image](https://github.com/user-attachments/assets/a037ccf3-67b8-43df-8490-95e2812c670c)
+![image](https://github.com/user-attachments/assets/d5677755-1cb9-4347-a7c3-59f2bba306d2)
 
 
